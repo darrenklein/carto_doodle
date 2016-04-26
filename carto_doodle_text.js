@@ -27,15 +27,13 @@ $(document).ready(function(){
         
         geoObject = JSON.stringify(e.layer.toGeoJSON());
         
-        geoObject_array.push(geoObject);
+        //geoObject_array.push(geoObject);
         
-        geoObject_index = geoObject_array.length - 1;
+        //geoObject_index = geoObject_array.length - 1;
         
-        $('#doodle_form').append('<input name="geoObject['+geoObject_index+']" value='+geoObject+' />')
+        //$('#doodle_form').append('<input name="geoObject['+geoObject_index+']" value='+geoObject+' />')
         
-        
-        
-        
+
         
         
         
@@ -96,5 +94,18 @@ $(document).ready(function(){
         */
 
     });
+
+    
+
+    
+    
+        $("#test").click(function(){
+            $.each(featureGroup._layers, function(key, value){
+                thing = JSON.stringify(value.toGeoJSON());
+                console.log(thing);   
+            });
+
+        });
+    
     
 });
