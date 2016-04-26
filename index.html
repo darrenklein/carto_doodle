@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+    <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+    
+    <style>
+    
+        #map{
+            height: 300px;
+        }
+        
+    </style>
+    
+</head>
+
+<body>
+    
+<div id="map"></div>
+
+<form id='doodle_form' action='db_connection.php' method='post'>
+    <!--<input type='text' id='layer_type' name='layer_type' placeholder='layer_type' />
+    <input type='text' id='latitude' name='latitude' placeholder='latitude' />
+    <input type='text' id='longitude' name='longitude' placeholder='longitude' />
+    <input type='text' id='polygon' name='polygon' placeholder='polygon' />
+    <input type='text' id='radius' name='radius' placeholder='radius' />
+    <input type='text' id='line' name='line' placeholder='line' />-->
+    <input type='submit' value='Submit' />
+</form>
+
+    
+    
+    
+<link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.3/leaflet.draw.css' rel='stylesheet' />
+<script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.3/leaflet.draw.js'></script>    
+    
+<script src="carto_doodle_text.js"></script>    
+    
+</body>
+
+</html>
