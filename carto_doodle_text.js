@@ -19,8 +19,6 @@ $(document).ready(function(){
     
 
     
-    geoObjectString_array = [];
-    type_array = [];
 
     map.on('draw:created', function(e){
         
@@ -99,8 +97,11 @@ $(document).ready(function(){
     
 
     
+        geoObjectString_array = [];
+        type_array = [];
     
-        $("#test").click(function(){
+    
+        $("#doodle_form").submit(function(){
             
             $.each(featureGroup._layers, function(key, value){
                 geoObject = value.toGeoJSON();

@@ -1,5 +1,7 @@
 <?php
 
+
+/*
 require '../../credentials/local_credentials.php';
 
 
@@ -42,6 +44,13 @@ if ($success){
     pg_close();
     echo "Big ups from PostgreSQL and PostGIS";
 };
+*/
+
+
+
+
+
+
 
 
 
@@ -95,4 +104,40 @@ $result_not_parsed = curl_exec($ch);
 
 echo "cool";
 */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//UPDATED CARTODB CONNECTION - DOESN'T WORK FROM LOCAL SERVER
+
+$geoObject_array = $_POST['geoObject'];
+$type_array = $_POST['type'];
+
+foreach($geoObject_array as $key => $value){
+    $type = $type_array[$key];
+    
+    if($type == 'Polygon'){
+        echo "cURL me a polygon";
+    }
+    elseif($type == 'Point'){
+        echo "cURL me a point";
+    }
+    else{
+        echo "cURL me a line, fucker";
+    };    
+};
+
+
 ?>
