@@ -126,17 +126,37 @@ $geoObject_array = $_POST['geoObject'];
 $type_array = $_POST['type'];
 
 foreach($geoObject_array as $key => $value){
-    $type = $type_array[$key];
+    $type = strtolower($type_array[$key]);
     
-    if($type == 'Polygon'){
-        echo "cURL me a polygon";
+    $value = substr($value, 45, -1);
+    $value = "'" . $value . "'";
+    
+    $destination;
+    
+    if($type == 'polygon'){
+        $GeoJSON = "(ST_SetSRID(ST_GeomFromGeoJSON($value), 4326))";
+        $destination = "$type";
     }
-    elseif($type == 'Point'){
-        echo "cURL me a point";
+    elseif($type == 'point'){
+        $GeoJSON = "(ST_SetSRID(ST_GeomFromGeoJSON($value), 4326))";
+        $destination = "$type";
     }
     else{
-        echo "cURL me a line, fucker";
-    };    
+        $GeoJSON = "(ST_SetSRID(ST_GeomFromGeoJSON($value), 4326))";
+        $destination = "line";
+    }; 
+    
+    $cartoDBsql = "INSERT INTO carto_doodle_$destination (the_geom) VALUES $GeoJSON";
+    
+    // Initializing curl
+    $ch = curl_init( "https://".$cartodb_username.".cartodb.com/api/v2/sql" );
+    $query = http_build_query(array('q'=>$cartoDBsql,'api_key'=>$api_key));
+    // Configuring curl options
+    curl_setopt($ch, CURLOPT_POST, TRUE);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+    $result_not_parsed = curl_exec($ch);
+    //----------------  
 };
 
 
