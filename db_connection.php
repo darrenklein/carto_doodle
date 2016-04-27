@@ -122,6 +122,10 @@ echo "cool";
 
 //UPDATED CARTODB CONNECTION - DOESN'T WORK FROM LOCAL SERVER
 
+
+$cartodb_username = "***";
+$api_key = "***";
+
 $geoObject_array = $_POST['geoObject'];
 $type_array = $_POST['type'];
 
