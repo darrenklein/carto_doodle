@@ -19,13 +19,14 @@ $(document).ready(function(){
     
 
     
-    geoObject_array = [];
+    geoObjectString_array = [];
+    type_array = [];
 
     map.on('draw:created', function(e){
         
         featureGroup.addLayer(e.layer);
         
-        geoObject = JSON.stringify(e.layer.toGeoJSON());
+        //geoObject = JSON.stringify(e.layer.toGeoJSON());
         
         //geoObject_array.push(geoObject);
         
@@ -100,11 +101,20 @@ $(document).ready(function(){
     
     
         $("#test").click(function(){
+            
             $.each(featureGroup._layers, function(key, value){
-                thing = JSON.stringify(value.toGeoJSON());
-                console.log(thing);   
+                geoObject = value.toGeoJSON();
+                type = geoObject.geometry.type;
+                geoObjectString = JSON.stringify(value.toGeoJSON());
+                geoObjectString_array.push(geoObjectString);
+                type_array.push(type);
             });
-
+            
+            for(i = 0; i < geoObjectString_array.length; i++){
+                $('#doodle_form').append('<input type="text" name="geoObject['+i+']" value='+geoObjectString_array[i]+' />');
+                $('#doodle_form').append('<input type="text" name="type['+i+']" value='+type_array[i]+' />');
+            };
+            
         });
     
     
