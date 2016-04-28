@@ -12,6 +12,9 @@ $(document).ready(function(){
     var featureGroup = L.featureGroup().addTo(map);
 
     var drawControl = new L.Control.Draw({
+        draw: {
+            circle: false
+        },
         edit: {
             featureGroup: featureGroup
         }
