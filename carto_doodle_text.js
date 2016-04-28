@@ -34,6 +34,19 @@ $(document).ready(function(){
         featureGroup.addLayer(e.layer);
         e.layer.bindPopup(popUpFields).openPopup();
         
+        e.layer.on('click', function(){
+            if(e.layer.notes){
+                e.layer.bindPopup("What's here?</br><input class='popup_notes' type='text' value='"+e.layer.notes+"' /><button class='popup_save'>Save</button>").openPopup();
+            }
+            else{
+                e.layer.bindPopup(popUpFields).openPopup();
+            };
+            
+            $('.popup_save').click(function(){
+                e.layer.notes = $('.popup_notes').val();
+            });
+        });
+        
         $('.popup_save').click(function(){
             e.layer.notes = $('.popup_notes').val();
         });
@@ -47,7 +60,8 @@ $(document).ready(function(){
     notes_array = [];
 
 
-    $("#doodle_form").submit(function(){
+    //$("#doodle_form").submit(function(){
+    $("#test").click(function(){
 
         $.each(featureGroup._layers, function(key, value){
             geoObject = value.toGeoJSON();
