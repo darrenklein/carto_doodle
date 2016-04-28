@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+    
+<head>
+    
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css" />
+
+    <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.15/themes/css/cartodb.css" />
+    <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
+
+    <script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+
+    <style>   
+        #map {
+            height: 500px;
+        }
+    </style>
+        
+</head>
+    
+    
+<body>
+
+    <div id="map"></div>
+
+    <script>
+
+        
+        window.onload = function(){
+            
+            var map = L.map('map', {zoomControl: false}).setView([40.709792, -73.991547], 10);
+            L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {maxZoom: 19,}).addTo(map);
+            
+            
+            var layerSource = {
+                user_name: 'skwidbreth',
+                type: 'cartodb',
+                cartodb_logo: false,
+                sublayers: [{
+                    sql: "SELECT * FROM carto_doodle_point",
+                    cartocss: '#carto_doodle_point{marker-fill:#D94C38;marker-opacity:1;}'
+                    },
+                    {
+                    sql: "SELECT * FROM carto_doodle_polygon",
+                    cartocss: '#carto_doodle_polygon{polygon-fill:#E0D03D;polygon-opacity:1}'
+                    },
+                    {
+                    sql: "SELECT * FROM carto_doodle_line",
+                    cartocss: '#carto_doodle_line{line-color:#A0D03D;line-opacity:1}'
+                }]
+            };
+
+            
+            var sublayers = [];
+            
+            
+            // ADD LAYER TO MAP
+            cartodb.createLayer(map,layerSource).addTo(map).done(function(layer) {
+
+                for (i = 0; i < layer.getSubLayerCount(); i++) {
+                    sublayers[i] = layer.getSubLayer(i);
+                };
+                
+            });
+            
+        };
+        
+
+    </script>
+
+
+</body>
+    
+    
+    
+</html>
