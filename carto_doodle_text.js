@@ -23,7 +23,7 @@ $(document).ready(function(){
 
     
     
-    var popUpFields = "What's here?</br><input type='text' />"
+    var popUpFields = "What's here?</br><input class='popup_notes' type='text' /><button class='popup_save'>Save</button>"
     
     
     
@@ -33,6 +33,10 @@ $(document).ready(function(){
     map.on('draw:created', function(e){
         featureGroup.addLayer(e.layer);
         e.layer.bindPopup(popUpFields).openPopup();
+        
+        $('.popup_save').click(function(){
+            e.layer.notes = $('.popup_notes').val();
+        });
     });
     
 
@@ -40,21 +44,27 @@ $(document).ready(function(){
     
     geoObjectString_array = [];
     type_array = [];
+    notes_array = [];
 
 
     $("#doodle_form").submit(function(){
 
         $.each(featureGroup._layers, function(key, value){
             geoObject = value.toGeoJSON();
-            type = geoObject.geometry.type;
             geoObjectString = JSON.stringify(value.toGeoJSON());
             geoObjectString_array.push(geoObjectString);
+            
+            type = geoObject.geometry.type;
             type_array.push(type);
+            
+            notes = value.notes;
+            notes_array.push(notes);
         });
 
         for(i = 0; i < geoObjectString_array.length; i++){
             $('#doodle_form').append('<input type="text" name="geoObject['+i+']" value='+geoObjectString_array[i]+' />');
             $('#doodle_form').append('<input type="text" name="type['+i+']" value='+type_array[i]+' />');
+            $('#doodle_form').append('<input type="text" name="notes['+i+']" value="'+notes_array[i]+'" />');
         };
 
     });
