@@ -60,8 +60,7 @@ $(document).ready(function(){
     notes_array = [];
 
 
-    //$("#doodle_form").submit(function(){
-    $("#test").click(function(){
+    $("#doodle_form").submit(function(){
 
         $.each(featureGroup._layers, function(key, value){
             geoObject = value.toGeoJSON();
@@ -76,9 +75,9 @@ $(document).ready(function(){
         });
 
         for(i = 0; i < geoObjectString_array.length; i++){
-            $('#doodle_form').append('<input type="text" name="geoObject['+i+']" value='+geoObjectString_array[i]+' />');
-            $('#doodle_form').append('<input type="text" name="type['+i+']" value='+type_array[i]+' />');
-            $('#doodle_form').append('<input type="text" name="notes['+i+']" value="'+notes_array[i]+'" />');
+            $('#doodle_form').append('<input type="hidden" name="geoObject['+i+']" value='+geoObjectString_array[i]+' />');
+            $('#doodle_form').append('<input type="hidden" name="type['+i+']" value='+type_array[i]+' />');
+            $('#doodle_form').append('<input type="hidden" name="notes['+i+']" value="'+notes_array[i]+'" />');
         };
 
     });
