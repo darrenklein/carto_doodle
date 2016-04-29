@@ -47,22 +47,27 @@
             
             
             
-            
-            
-            var url = "https://skwidbreth.cartodb.com/api/v2/sql?format=geojson&q=SELECT cartodb_id,the_geom FROM carto_doodle_polygon";
-            
             var drawnItems = new L.FeatureGroup();
             
-            $.getJSON(url, function(data){
-                geojsonLayer = L.geoJson(data, {
-                    onEachFeature: function (feature, layer) {
-                        layer.cartodb_id=feature.properties.cartodb_id;
-                        drawnItems.addLayer(layer);
-                    }
-                });
-                map.addLayer(drawnItems);
-            });
+            var url_array = ["https://skwidbreth.cartodb.com/api/v2/sql?format=geojson&q=SELECT cartodb_id,the_geom,notes FROM carto_doodle_point", "https://skwidbreth.cartodb.com/api/v2/sql?format=geojson&q=SELECT cartodb_id,the_geom,notes FROM carto_doodle_polygon", "https://skwidbreth.cartodb.com/api/v2/sql?format=geojson&q=SELECT cartodb_id,the_geom,notes FROM carto_doodle_line"];
             
+            
+            $.each(url_array, function(key, url){
+                
+                $.getJSON(url, function(data){
+                    geojsonLayer = L.geoJson(data, {
+                        onEachFeature: function (feature, layer) {
+                            layer.cartodb_id=feature.properties.cartodb_id;
+                            drawnItems.addLayer(layer);
+                            
+                            console.log(layer.cartodb_id);
+                            console.log(layer.feature.properties.notes);
+                        }
+                    });
+                    map.addLayer(drawnItems);
+                });
+                
+            });
             
 
 
