@@ -1,14 +1,99 @@
 <!DOCTYPE html>
+
+<head>
+
+    <script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+    <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+    
+    <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.15/themes/css/cartodb.css" />
+    <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
+    
+    <style>
+    
+        #map{
+            height: 500px;
+        }
+        
+    </style>
+    
+</head>
+
+<body>
+    
+<div id="map"></div>
+
+<form id='doodle_form' action='db_connection.php' method='post'>
+    <input type='submit' value='Submit' />
+</form>
+    
+    <button id="test">test</button>
+    
+<link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.3/leaflet.draw.css' rel='stylesheet' />
+<script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.3/leaflet.draw.js'></script>    
+    
+    <script>
+    
+        $(document).ready(function(){
+    
+            var map = L.map('map', {scrollWheelZoom: false}).setView([40.709792, -73.991547], 10);
+
+            L.tileLayer('https://{s}.tiles.mapbox.com/v3/ebrelsford.ho06j5h0/{z}/{x}/{y}.png', {
+                maxZoom: 18,
+                attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery &copy; <a href="http://mapbox.com">Mapbox</a>'
+                }).addTo(map);
+            
+            
+            
+            
+            
+            
+            
+            var url = "https://skwidbreth.cartodb.com/api/v2/sql?format=geojson&q=SELECT cartodb_id,the_geom FROM carto_doodle_polygon";
+            
+            var drawnItems = new L.FeatureGroup();
+            
+            $.getJSON(url, function(data){
+                geojsonLayer = L.geoJson(data, {
+                    onEachFeature: function (feature, layer) {
+                        layer.cartodb_id=feature.properties.cartodb_id;
+                        drawnItems.addLayer(layer);
+                    }
+                });
+                map.addLayer(drawnItems);
+            });
+            
+            
+
+
+            var drawControl = new L.Control.Draw({
+                draw: {
+                    circle: false
+                },
+                edit: {
+                    featureGroup: drawnItems
+                }
+            }).addTo(map);
+
+
+        });
+    
+    </script>    
+    
+</body>
+
+
+<!--
 <html>
     
 <head>
     
-    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css" />
-
     <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.15/themes/css/cartodb.css" />
     <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
 
     <script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+    
+
 
     <style>   
         #map {
@@ -22,10 +107,11 @@
 <body>
 
     <div id="map"></div>
+    
+
 
     <script>
 
-        
         window.onload = function(){
             
             var map = L.map('map', {zoomControl: false}).setView([40.709792, -73.991547], 10);
@@ -71,6 +157,6 @@
 
 </body>
     
-    
+-->
     
 </html>
