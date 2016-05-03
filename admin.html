@@ -31,137 +31,13 @@
     
 <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.3/leaflet.draw.css' rel='stylesheet' />
 <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.3/leaflet.draw.js'></script>    
+
     
-    <script>
     
-        $(document).ready(function(){
-    
-            var map = L.map('map', {scrollWheelZoom: false}).setView([40.709792, -73.991547], 10);
-
-            L.tileLayer('https://{s}.tiles.mapbox.com/v3/ebrelsford.ho06j5h0/{z}/{x}/{y}.png', {
-                maxZoom: 18,
-                attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery &copy; <a href="http://mapbox.com">Mapbox</a>'
-                }).addTo(map);
-            
-            
-            
-            
-            
-            var drawnItems = new L.FeatureGroup();
-            
-            var url_array = ["https://skwidbreth.cartodb.com/api/v2/sql?format=geojson&q=SELECT cartodb_id,the_geom,notes FROM carto_doodle_point", "https://skwidbreth.cartodb.com/api/v2/sql?format=geojson&q=SELECT cartodb_id,the_geom,notes FROM carto_doodle_polygon", "https://skwidbreth.cartodb.com/api/v2/sql?format=geojson&q=SELECT cartodb_id,the_geom,notes FROM carto_doodle_line"];
-            
-            
-            $.each(url_array, function(key, url){
-                
-                $.getJSON(url, function(data){
-                    geojsonLayer = L.geoJson(data, {
-                        onEachFeature: function (feature, layer) {
-                            layer.cartodb_id=feature.properties.cartodb_id;
-                            drawnItems.addLayer(layer);
-                            
-                            console.log(layer.cartodb_id);
-                            console.log(layer.feature.properties.notes);
-                        }
-                    });
-                    map.addLayer(drawnItems);
-                });
-                
-            });
-            
-
-
-            var drawControl = new L.Control.Draw({
-                draw: {
-                    circle: false
-                },
-                edit: {
-                    featureGroup: drawnItems
-                }
-            }).addTo(map);
-
-
-        });
-    
-    </script>    
+    <script src="carto_doodle_admin.js"></script> 
     
 </body>
 
 
-<!--
-<html>
-    
-<head>
-    
-    <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.15/themes/css/cartodb.css" />
-    <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
 
-    <script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
-    
-
-
-    <style>   
-        #map {
-            height: 500px;
-        }
-    </style>
-        
-</head>
-    
-    
-<body>
-
-    <div id="map"></div>
-    
-
-
-    <script>
-
-        window.onload = function(){
-            
-            var map = L.map('map', {zoomControl: false}).setView([40.709792, -73.991547], 10);
-            L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {maxZoom: 19,}).addTo(map);
-            
-            
-            var layerSource = {
-                user_name: 'skwidbreth',
-                type: 'cartodb',
-                cartodb_logo: false,
-                sublayers: [{
-                    sql: "SELECT * FROM carto_doodle_point",
-                    cartocss: '#carto_doodle_point{marker-fill:#D94C38;marker-opacity:1;}'
-                    },
-                    {
-                    sql: "SELECT * FROM carto_doodle_polygon",
-                    cartocss: '#carto_doodle_polygon{polygon-fill:#E0D03D;polygon-opacity:1}'
-                    },
-                    {
-                    sql: "SELECT * FROM carto_doodle_line",
-                    cartocss: '#carto_doodle_line{line-color:#A0D03D;line-opacity:1}'
-                }]
-            };
-
-            
-            var sublayers = [];
-            
-            
-            // ADD LAYER TO MAP
-            cartodb.createLayer(map,layerSource).addTo(map).done(function(layer) {
-
-                for (i = 0; i < layer.getSubLayerCount(); i++) {
-                    sublayers[i] = layer.getSubLayer(i);
-                };
-                
-            });
-            
-        };
-        
-
-    </script>
-
-
-</body>
-    
--->
-    
 </html>
