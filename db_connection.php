@@ -154,7 +154,9 @@ foreach($geoObject_array as $key => $value){
     else{
         $GeoJSON = "(ST_SetSRID(ST_GeomFromGeoJSON($value), 4326))";
         $destination = "line";
-    }; 
+    };
+    
+    echo $GeoJSON;
     
     $cartoDBsql = "INSERT INTO carto_doodle_$destination (the_geom, notes) VALUES ($GeoJSON, $notes)";
     

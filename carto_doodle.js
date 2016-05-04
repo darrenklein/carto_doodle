@@ -61,11 +61,14 @@ $(document).ready(function(){
 
 
     $("#doodle_form").submit(function(){
+    //$("#test").click(function(){
 
         $.each(featureGroup._layers, function(key, value){
             geoObject = value.toGeoJSON();
             geoObjectString = JSON.stringify(value.toGeoJSON());
             geoObjectString_array.push(geoObjectString);
+            
+            console.log(geoObjectString);
             
             type = geoObject.geometry.type;
             type_array.push(type);

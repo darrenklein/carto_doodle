@@ -23,7 +23,7 @@ $(document).ready(function(){
                 $.getJSON(url, function(data){
                     geojsonLayer = L.geoJson(data, {
                         onEachFeature: function (feature, layer) {
-                            layer.cartodb_id=feature.properties.cartodb_id;
+                            layer.cartodb_id = feature.properties.cartodb_id;
                             featureGroup.addLayer(layer);
                             
                             console.log(layer.cartodb_id);
@@ -54,18 +54,20 @@ $(document).ready(function(){
     map.on('draw:edited', function(e){
         e.layers.eachLayer(function(layer){
             layer.edit = true;
-            console.log(layer);
+            //console.log(layer);
         });
     });
 
 
     
     geoObjectString_array = [];
+    cartodbID_array = [];
     type_array = [];
     notes_array = [];
 
 
-    $("#test").click(function(){
+    $("#admin_doodle_form").submit(function(){
+    //$("#test").click(function(){
         
         $.each(featureGroup._layers, function(key, value){
             if(value.edit){
@@ -73,6 +75,9 @@ $(document).ready(function(){
                 geoObject = value.toGeoJSON();
                 geoObjectString = JSON.stringify(value.toGeoJSON());
                 geoObjectString_array.push(geoObjectString);
+                
+                cartodbID = geoObject.properties.cartodb_id;
+                cartodbID_array.push(cartodbID);
             
                 type = geoObject.geometry.type;
                 type_array.push(type);
@@ -92,11 +97,15 @@ $(document).ready(function(){
         });
 
         
+        
+        
         for(i = 0; i < geoObjectString_array.length; i++){
-            $('#doodle_form').append('<input type="text" name="geoObject['+i+']" value='+geoObjectString_array[i]+' />');
-            $('#doodle_form').append('<input type="text" name="type['+i+']" value='+type_array[i]+' />');
+            $('#admin_doodle_form').append('<input type="text" name="geoObject['+i+']" value='+geoObjectString_array[i]+' />');
+            $('#admin_doodle_form').append('<input type="text" name="cartodbID['+i+']" value='+cartodbID_array[i]+' />');
+            $('#admin_doodle_form').append('<input type="text" name="type['+i+']" value='+type_array[i]+' />');
             //$('#doodle_form').append('<input type="hidden" name="notes['+i+']" value="'+notes_array[i]+'" />');
         };
+        
         
     });
     
