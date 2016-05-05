@@ -60,4 +60,46 @@ foreach($geoObject_array as $key => $value){
 };
 
 
+
+
+$deletedID_array = $_POST['deletedID'];
+$deletedType_array = $_POST['deletedType'];
+
+
+foreach($deletedID_array as $key => $value){
+    
+    
+ 
+    $cartodbID = $value;
+    $type = strtolower($deletedType_array[$key]);
+
+    if($type == 'polygon'){
+        $destination = "$type";
+    }
+    elseif($type == 'point'){
+        $destination = "$type";
+    }
+    else{
+        $destination = "line";
+    };
+    
+    $cartoDBsql = "DELETE FROM carto_doodle_$destination WHERE cartodb_id = $cartodbID";
+
+    echo $cartoDBsql;
+    
+   
+    // Initializing curl
+    $ch = curl_init( "https://".$cartodb_username.".cartodb.com/api/v2/sql" );
+    $query = http_build_query(array('q'=>$cartoDBsql,'api_key'=>$api_key));
+    // Configuring curl options
+    curl_setopt($ch, CURLOPT_POST, TRUE);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+    $result_not_parsed = curl_exec($ch);
+    //---------------- 
+   
+};
+
+
+
 ?>

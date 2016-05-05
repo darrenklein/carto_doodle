@@ -86,8 +86,8 @@ $(document).ready(function(){
         notes_array = [];
 
 
-        //$("#admin_doodle_form").submit(function(){
-        $("#test").click(function(){
+        $("#admin_doodle_form").submit(function(){
+        //$("#test").click(function(){
 
             $.each(featureGroup._layers, function(key, value){
                 if(value.edit){
@@ -123,8 +123,8 @@ $(document).ready(function(){
 
                 
             for(j = 0; j < deletedID_array.length; j++){
-                $('#admin_doodle_form').append('<input type="text" name="deletedID['+i+']" value='+deletedID_array[j]+' />');
-                $('#admin_doodle_form').append('<input type="text" name="deletedType['+i+']" value='+deletedType_array[j]+' />');
+                $('#admin_doodle_form').append('<input type="text" name="deletedID['+j+']" value='+deletedID_array[j]+' />');
+                $('#admin_doodle_form').append('<input type="text" name="deletedType['+j+']" value='+deletedType_array[j]+' />');
             };
            
             
