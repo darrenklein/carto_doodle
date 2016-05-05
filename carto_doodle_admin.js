@@ -60,6 +60,13 @@ $(document).ready(function(){
                     layer.edit = true;
                 });
             });
+    
+            map.on('draw:deleted', function(e){
+                e.layers.eachLayer(function(layer){
+                    console.log(layer.feature.properties.cartodb_id);
+                    console.log(layer.feature.geometry.type);
+                });
+            });
 
 
     
@@ -87,8 +94,8 @@ $(document).ready(function(){
                 type_array.push(type);
                 
                 //DELETE THESE PROPERTIES SO THEY ARE NOT PASSED INTO THE GEOJSON ITSELF
-                delete geoObject.properties.notes;
                 delete geoObject.properties.cartodb_id;
+                delete geoObject.properties.notes;
                 
                 geoObjectString = JSON.stringify(value.toGeoJSON());
                 geoObjectString_array.push(geoObjectString);
