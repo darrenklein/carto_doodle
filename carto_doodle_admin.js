@@ -22,12 +22,15 @@ $(document).ready(function(){
                 
                 $.getJSON(url, function(data){
                     geojsonLayer = L.geoJson(data, {
-                        onEachFeature: function (feature, layer) {
+                        onEachFeature: function(feature, layer){
                             layer.cartodb_id = feature.properties.cartodb_id;
+                            layer.notes = feature.properties.notes;
+                            
                             featureGroup.addLayer(layer);
                             
-                            console.log(layer.cartodb_id);
-                            console.log(layer.feature.properties.notes);
+                            layer.on('click', function(){
+                                layer.bindPopup("CartoDB ID "+layer.cartodb_id+" </br><input class='popup_notes' type='text' value='"+layer.notes+"' /><button class='popup_save'>Save</button>").openPopup();
+                            });
                         }
                     });
                     map.addLayer(featureGroup);
