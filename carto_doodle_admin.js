@@ -95,9 +95,7 @@ $(document).ready(function(){
             }
         });
 
-        
-        
-        
+
         for(i = 0; i < geoObjectString_array.length; i++){
             $('#admin_doodle_form').append('<input type="text" name="geoObject['+i+']" value='+geoObjectString_array[i]+' />');
             $('#admin_doodle_form').append('<input type="text" name="cartodbID['+i+']" value='+cartodbID_array[i]+' />');

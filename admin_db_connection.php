@@ -2,13 +2,14 @@
 
 
 
-$cartodb_username = "**";
-$api_key = "**";
+$cartodb_username = "***";
+$api_key = "***";
 
 
 
 $geoObject_array = $_POST['geoObject'];
 $cartodbID_array = $_POST['cartodbID'];
+$notes_array = $_POST['notes'];
 $type_array = $_POST['type'];
 
 
@@ -17,8 +18,9 @@ foreach($geoObject_array as $key => $value){
     $value = substr($value, 29, -1);
     $value = "'" . $value . "'";
     
-    
     $cartodbID = $cartodbID_array[$key];
+    
+    $notes = "'" . $notes_array[$key] . "'";
     
     $type = strtolower($type_array[$key]);
         
@@ -39,7 +41,7 @@ foreach($geoObject_array as $key => $value){
     }; 
     
     
-    $cartoDBsql = "UPDATE carto_doodle_$destination SET the_geom = $GeoJSON WHERE cartodb_id = $cartodbID";
+    $cartoDBsql = "UPDATE carto_doodle_$destination SET the_geom = $GeoJSON, notes = $notes WHERE cartodb_id = $cartodbID";
     
     echo $cartoDBsql;
     
