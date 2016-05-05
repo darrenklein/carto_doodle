@@ -61,57 +61,74 @@ $(document).ready(function(){
                 });
             });
     
+    
+            deletedID_array = [];
+            deletedType_array = [];
+    
             map.on('draw:deleted', function(e){
                 e.layers.eachLayer(function(layer){
-                    console.log(layer.feature.properties.cartodb_id);
-                    console.log(layer.feature.geometry.type);
+                    deletedID_array.push(layer.feature.properties.cartodb_id);
+                    deletedType_array.push(layer.feature.geometry.type);
+                    
+                    
+                    //console.log(deletedID_array);
+                    //console.log(deletedType_array);
+                    //console.log(layer.feature.properties.cartodb_id);
+                    //console.log(layer.feature.geometry.type);
                 });
             });
 
 
     
-    geoObjectString_array = [];
-    cartodbID_array = [];
-    type_array = [];
-    notes_array = [];
+        geoObjectString_array = [];
+        cartodbID_array = [];
+        type_array = [];
+        notes_array = [];
 
 
-    //$("#admin_doodle_form").submit(function(){
-    $("#test").click(function(){
-        
-        $.each(featureGroup._layers, function(key, value){
-            if(value.edit){
-                
-                geoObject = value.toGeoJSON();
-                
-                cartodbID = geoObject.properties.cartodb_id;
-                cartodbID_array.push(cartodbID);
-                
-                notes = value.notes;
-                notes_array.push(notes);
+        //$("#admin_doodle_form").submit(function(){
+        $("#test").click(function(){
+
+            $.each(featureGroup._layers, function(key, value){
+                if(value.edit){
+
+                    geoObject = value.toGeoJSON();
+
+                    cartodbID = geoObject.properties.cartodb_id;
+                    cartodbID_array.push(cartodbID);
+
+                    notes = value.notes;
+                    notes_array.push(notes);
+
+                    type = geoObject.geometry.type;
+                    type_array.push(type);
+
+                    //DELETE THESE PROPERTIES SO THEY ARE NOT PASSED INTO THE GEOJSON ITSELF
+                    delete geoObject.properties.cartodb_id;
+                    delete geoObject.properties.notes;
+
+                    geoObjectString = JSON.stringify(value.toGeoJSON());
+                    geoObjectString_array.push(geoObjectString);
+                }
+            });
+
+
+            for(i = 0; i < geoObjectString_array.length; i++){
+                $('#admin_doodle_form').append('<input type="text" name="geoObject['+i+']" value='+geoObjectString_array[i]+' />');
+                $('#admin_doodle_form').append('<input type="text" name="cartodbID['+i+']" value='+cartodbID_array[i]+' />');
+                $('#admin_doodle_form').append('<input type="text" name="type['+i+']" value='+type_array[i]+' />');
+                $('#admin_doodle_form').append('<input type="text" name="notes['+i+']" value="'+notes_array[i]+'" />');
+            };
             
-                type = geoObject.geometry.type;
-                type_array.push(type);
+
                 
-                //DELETE THESE PROPERTIES SO THEY ARE NOT PASSED INTO THE GEOJSON ITSELF
-                delete geoObject.properties.cartodb_id;
-                delete geoObject.properties.notes;
-                
-                geoObjectString = JSON.stringify(value.toGeoJSON());
-                geoObjectString_array.push(geoObjectString);
-            }
+            for(j = 0; j < deletedID_array.length; j++){
+                $('#admin_doodle_form').append('<input type="text" name="deletedID['+i+']" value='+deletedID_array[j]+' />');
+                $('#admin_doodle_form').append('<input type="text" name="deletedType['+i+']" value='+deletedType_array[j]+' />');
+            };
+           
+            
         });
-
-
-        for(i = 0; i < geoObjectString_array.length; i++){
-            $('#admin_doodle_form').append('<input type="text" name="geoObject['+i+']" value='+geoObjectString_array[i]+' />');
-            $('#admin_doodle_form').append('<input type="text" name="cartodbID['+i+']" value='+cartodbID_array[i]+' />');
-            $('#admin_doodle_form').append('<input type="text" name="type['+i+']" value='+type_array[i]+' />');
-            $('#admin_doodle_form').append('<input type="text" name="notes['+i+']" value="'+notes_array[i]+'" />');
-        };
-        
-        
-    });
     
     
 });
