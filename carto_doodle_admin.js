@@ -73,14 +73,20 @@ $(document).ready(function(){
             if(value.edit){
                 
                 geoObject = value.toGeoJSON();
-                geoObjectString = JSON.stringify(value.toGeoJSON());
-                geoObjectString_array.push(geoObjectString);
                 
                 cartodbID = geoObject.properties.cartodb_id;
                 cartodbID_array.push(cartodbID);
             
                 type = geoObject.geometry.type;
                 type_array.push(type);
+                
+                //DELETE THESE PROPERTIES SO THEY ARE NOT PASSED INTO THE GEOJSON ITSELF
+                delete geoObject.properties.notes;
+                delete geoObject.properties.cartodb_id;
+                
+                geoObjectString = JSON.stringify(value.toGeoJSON());
+                geoObjectString_array.push(geoObjectString);
+                
             
             }
             /*
