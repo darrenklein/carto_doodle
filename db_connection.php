@@ -14,7 +14,7 @@ foreach($geoObject_array as $key => $value){
     
     $type = strtolower($type_array[$key]);
     
-    $notes = "'" . $notes_array[$key] . "'";
+    $notes = "'" . str_replace("'", "", $notes_array[$key]) . "'";
         
     $destination;
     

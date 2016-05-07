@@ -17,7 +17,7 @@ foreach($geoObject_array as $key => $value){
     
     $cartodbID = $cartodbID_array[$key];
     
-    $notes = "'" . $notes_array[$key] . "'";
+    $notes = "'" . str_replace("'", "", $notes_array[$key]) . "'";
     
     $type = strtolower($type_array[$key]);
         

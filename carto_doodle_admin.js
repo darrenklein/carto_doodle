@@ -11,7 +11,7 @@ $(document).ready(function(){
             
     var featureGroup = new L.FeatureGroup();
 
-    var url_array = ["https://YOUR_USERNAME.cartodb.com/api/v2/sql?format=geojson&q=SELECT cartodb_id,the_geom,notes FROM carto_doodle_point", "https://YOUR_USERNAME.cartodb.com/api/v2/sql?format=geojson&q=SELECT cartodb_id,the_geom,notes FROM carto_doodle_polygon", "https://YOUR_USERNAME.cartodb.com/api/v2/sql?format=geojson&q=SELECT cartodb_id,the_geom,notes FROM carto_doodle_line"];
+    var url_array = ["https://skwidbreth.cartodb.com/api/v2/sql?format=geojson&q=SELECT cartodb_id,the_geom,notes FROM carto_doodle_point", "https://skwidbreth.cartodb.com/api/v2/sql?format=geojson&q=SELECT cartodb_id,the_geom,notes FROM carto_doodle_polygon", "https://skwidbreth.cartodb.com/api/v2/sql?format=geojson&q=SELECT cartodb_id,the_geom,notes FROM carto_doodle_line"];
             
     //ADDS THE JSON OF EACH LAYER TO THE FEATUREGROUP, ADDS THE VALUES OF THE CARTODB_ID AND NOTES COLUMNS AS PROPERTIES, AND POPULATES THE POPUP WITH THE OBJECT'S NOTES
     $.each(url_array, function(key, url){
@@ -44,7 +44,11 @@ $(document).ready(function(){
     //ADDS THE DRAWING PANEL TO THE MAP
     var drawControl = new L.Control.Draw({
         draw: {
-            circle: false
+            circle: false,
+            polygon: false,
+            marker: false,
+            rectangle: false,
+            polyline: false
         },
         edit: {
             featureGroup: featureGroup
