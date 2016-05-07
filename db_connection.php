@@ -1,8 +1,6 @@
 <?php
-//I THINK THAT THIS SCRIPT WILL ONLY RUN FROM A WEB SERVER, NOT A LOCAL SERVER
-
-$cartodb_username = "***";
-$api_key = "***";
+$cartodb_username = "**";
+$api_key = "**";
 
 $geoObject_array = $_POST['geoObject'];
 $type_array = $_POST['type'];
@@ -34,8 +32,7 @@ foreach($geoObject_array as $key => $value){
         $destination = "line";
     };
     
-    echo $GeoJSON;
-    
+        
     $cartoDBsql = "INSERT INTO carto_doodle_$destination (the_geom, notes) VALUES ($GeoJSON, $notes)";
     
     // Initializing curl
@@ -46,8 +43,11 @@ foreach($geoObject_array as $key => $value){
     curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
     $result_not_parsed = curl_exec($ch);
-    //---------------- 
+    //----------------
 
 };
+
+echo "<a href='/carto_doodle/index.html'>Return to drawing tool</a></br><a href='/carto_doodle/admin.html'>Proceed to admin tool</a>";
+die();
 
 ?>

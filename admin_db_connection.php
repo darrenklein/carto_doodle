@@ -1,7 +1,7 @@
 <?php
 
-$cartodb_username = "***";
-$api_key = "***";
+$cartodb_username = "**";
+$api_key = "**";
 
 $geoObject_array = $_POST['geoObject'];
 $cartodbID_array = $_POST['cartodbID'];
@@ -89,5 +89,8 @@ foreach($deletedID_array as $key => $value){
     //---------------- 
    
 };
+
+echo "<a href='/carto_doodle/index.html'>Return to drawing tool</a></br><a href='/carto_doodle/admin.html'>Return to admin tool</a>";
+die();
 
 ?>
