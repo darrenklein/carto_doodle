@@ -1,13 +1,8 @@
 <?php
-
-
-
-//UPDATED CARTODB CONNECTION - DOESN'T WORK FROM LOCAL SERVER
-
+//I THINK THAT THIS SCRIPT WILL ONLY RUN FROM A WEB SERVER, NOT A LOCAL SERVER
 
 $cartodb_username = "***";
 $api_key = "***";
-
 
 $geoObject_array = $_POST['geoObject'];
 $type_array = $_POST['type'];
@@ -15,6 +10,7 @@ $notes_array = $_POST['notes'];
 
 foreach($geoObject_array as $key => $value){
     
+    //THE ORIGINAL GEOJSON STRING HAS A FIXED NUMBER OF EXTRA LEADING/TRAILING CHARACTERS
     $value = substr($value, 45, -1);
     $value = "'" . $value . "'";
     
@@ -53,6 +49,5 @@ foreach($geoObject_array as $key => $value){
     //---------------- 
 
 };
-
 
 ?>

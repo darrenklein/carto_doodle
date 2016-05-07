@@ -1,20 +1,17 @@
 <?php
 
-
-
 $cartodb_username = "***";
 $api_key = "***";
-
-
 
 $geoObject_array = $_POST['geoObject'];
 $cartodbID_array = $_POST['cartodbID'];
 $notes_array = $_POST['notes'];
 $type_array = $_POST['type'];
 
-
+//FIRST, WE HANDLE EDITED OBJECTS
 foreach($geoObject_array as $key => $value){
     
+    //THE ORIGINAL GEOJSON STRING HAS A FIXED NUMBER OF EXTRA LEADING/TRAILING CHARACTERS
     $value = substr($value, 29, -1);
     $value = "'" . $value . "'";
     
@@ -43,9 +40,7 @@ foreach($geoObject_array as $key => $value){
     
     $cartoDBsql = "UPDATE carto_doodle_$destination SET the_geom = $GeoJSON, notes = $notes WHERE cartodb_id = $cartodbID";
     
-    echo $cartoDBsql;
-    
-    
+
     // Initializing curl
     $ch = curl_init( "https://".$cartodb_username.".cartodb.com/api/v2/sql" );
     $query = http_build_query(array('q'=>$cartoDBsql,'api_key'=>$api_key));
@@ -56,7 +51,6 @@ foreach($geoObject_array as $key => $value){
     $result_not_parsed = curl_exec($ch);
     //---------------- 
     
-
 };
 
 
@@ -65,11 +59,9 @@ foreach($geoObject_array as $key => $value){
 $deletedID_array = $_POST['deletedID'];
 $deletedType_array = $_POST['deletedType'];
 
-
+//THEN WE HANDLE DELETED OBJECTS
 foreach($deletedID_array as $key => $value){
     
-    
- 
     $cartodbID = $value;
     $type = strtolower($deletedType_array[$key]);
 
@@ -84,8 +76,6 @@ foreach($deletedID_array as $key => $value){
     };
     
     $cartoDBsql = "DELETE FROM carto_doodle_$destination WHERE cartodb_id = $cartodbID";
-
-    echo $cartoDBsql;
     
    
     // Initializing curl
@@ -99,7 +89,5 @@ foreach($deletedID_array as $key => $value){
     //---------------- 
    
 };
-
-
 
 ?>

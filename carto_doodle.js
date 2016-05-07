@@ -1,5 +1,6 @@
 $(document).ready(function(){
     
+    //GETS THE MAP LAYER
     var map = L.map('map', {scrollWheelZoom: false}).setView([40.709792, -73.991547], 10);
     
     L.tileLayer('https://{s}.tiles.mapbox.com/v3/ebrelsford.ho06j5h0/{z}/{x}/{y}.png', {
@@ -8,7 +9,7 @@ $(document).ready(function(){
         }).addTo(map);
     
     
-    
+    //SETS UP THE FEATUREGROUP AND ADDS THE DRAWING PANEL TO THE MAP
     var featureGroup = L.featureGroup().addTo(map);
 
     var drawControl = new L.Control.Draw({
@@ -21,15 +22,11 @@ $(document).ready(function(){
     }).addTo(map);
     
 
-    
-    
+    //SETS THE POPUP CONTENT
     var popUpFields = "What's here?</br><input class='popup_notes' type='text' /><button class='popup_save'>Save</button>"
     
     
-    
-    
-    
-
+    //SETS BASIC DRAWING FUNCIONALITY - AFTER GEOMETRIES ARE DRAWN, A POPUP OPENS ALLOWING USER TO INPUT NOTES. CLICKING A GEOMETRY AGAIN REOPENS THE WINDOW AND ALLOWS A USER TO EDIT THEIR NOTE.
     map.on('draw:created', function(e){
         featureGroup.addLayer(e.layer);
         e.layer.bindPopup(popUpFields).openPopup();
@@ -53,22 +50,18 @@ $(document).ready(function(){
     });
     
 
-
-    
+    //ARRAYS TO HOLD INPUT VALUES - USED TO GET LENGTH COUNTS AND ADD INDEXES TO INPUTS CREATED ON SUBMIT FOR PROCESSING BY PHP
     geoObjectString_array = [];
     type_array = [];
     notes_array = [];
 
 
     $("#doodle_form").submit(function(){
-    //$("#test").click(function(){
-
+        
         $.each(featureGroup._layers, function(key, value){
             geoObject = value.toGeoJSON();
             geoObjectString = JSON.stringify(value.toGeoJSON());
             geoObjectString_array.push(geoObjectString);
-            
-            console.log(geoObjectString);
             
             type = geoObject.geometry.type;
             type_array.push(type);
