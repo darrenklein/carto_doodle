@@ -1,4 +1,5 @@
 <?php
+
 $cartodb_username = "**";
 $api_key = "**";
 

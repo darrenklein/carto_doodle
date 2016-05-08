@@ -57,26 +57,31 @@ $(document).ready(function(){
 
 
     $("#doodle_form").submit(function(){
-        
-        $.each(featureGroup._layers, function(key, value){
-            geoObject = value.toGeoJSON();
-            geoObjectString = JSON.stringify(value.toGeoJSON());
-            geoObjectString_array.push(geoObjectString);
-            
-            type = geoObject.geometry.type;
-            type_array.push(type);
-            
-            notes = value.notes;
-            notes_array.push(notes);
-        });
 
-        for(i = 0; i < geoObjectString_array.length; i++){
-            $('#doodle_form').append('<input type="hidden" name="geoObject['+i+']" value='+geoObjectString_array[i]+' />');
-            $('#doodle_form').append('<input type="hidden" name="type['+i+']" value='+type_array[i]+' />');
-            $('#doodle_form').append('<input type="hidden" name="notes['+i+']" value="'+notes_array[i]+'" />');
+        if(Object.keys(featureGroup._layers).length == 0){
+            alert("You haven't added anything to the map.");
+            return false;
+        }
+        else{
+            $.each(featureGroup._layers, function(key, value){
+                geoObject = value.toGeoJSON();
+                geoObjectString = JSON.stringify(value.toGeoJSON());
+                geoObjectString_array.push(geoObjectString);
+
+                type = geoObject.geometry.type;
+                type_array.push(type);
+
+                notes = value.notes;
+                notes_array.push(notes);
+            });
+
+            for(i = 0; i < geoObjectString_array.length; i++){
+                $('#doodle_form').append('<input type="hidden" name="geoObject['+i+']" value='+geoObjectString_array[i]+' />');
+                $('#doodle_form').append('<input type="hidden" name="type['+i+']" value='+type_array[i]+' />');
+                $('#doodle_form').append('<input type="hidden" name="notes['+i+']" value="'+notes_array[i]+'" />');
+            };
         };
 
     });
-    
-    
+     
 });

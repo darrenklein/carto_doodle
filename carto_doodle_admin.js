@@ -11,7 +11,12 @@ $(document).ready(function(){
             
     var featureGroup = new L.FeatureGroup();
 
-    var url_array = ["https://skwidbreth.cartodb.com/api/v2/sql?format=geojson&q=SELECT cartodb_id,the_geom,notes FROM carto_doodle_point", "https://skwidbreth.cartodb.com/api/v2/sql?format=geojson&q=SELECT cartodb_id,the_geom,notes FROM carto_doodle_polygon", "https://skwidbreth.cartodb.com/api/v2/sql?format=geojson&q=SELECT cartodb_id,the_geom,notes FROM carto_doodle_line"];
+    var url_array = ["https://YOUR_USERNAME_HERE.cartodb.com/api/v2/sql?format=geojson&q=SELECT cartodb_id,the_geom,notes FROM carto_doodle_point", "https://YOUR_USERNAME_HERE.cartodb.com/api/v2/sql?format=geojson&q=SELECT cartodb_id,the_geom,notes FROM carto_doodle_polygon", "https://YOUR_USERNAME_HERE.cartodb.com/api/v2/sql?format=geojson&q=SELECT cartodb_id,the_geom,notes FROM carto_doodle_line"];
+    
+    
+    //USED LATER, AS PART OF FORM VALIDATION
+    edited_array = [];
+    
             
     //ADDS THE JSON OF EACH LAYER TO THE FEATUREGROUP, ADDS THE VALUES OF THE CARTODB_ID AND NOTES COLUMNS AS PROPERTIES, AND POPULATES THE POPUP WITH THE OBJECT'S NOTES
     $.each(url_array, function(key, url){
@@ -30,6 +35,7 @@ $(document).ready(function(){
                         $('.popup_save').click(function(){
                             layer.notes = $('.popup_notes').val();
                             layer.edit = true;
+                            edited_array.push(layer);
                         }); 
 
                     });
@@ -55,10 +61,12 @@ $(document).ready(function(){
         }
     }).addTo(map);
     
+    
     //WHEN AN OBJECT HAS BEEN EDITED, THE EDIT PROPERTY IS ADDED TO THAT OBJECT
     map.on('draw:edited', function(e){
         e.layers.eachLayer(function(layer){
             layer.edit = true;
+            edited_array.push(layer);
         });
     });
     
@@ -82,43 +90,48 @@ $(document).ready(function(){
 
 
     $("#admin_doodle_form").submit(function(){
+        
+        if(edited_array.length == 0 && deletedID_array.length == 0){
+            alert("You haven't made any changes.");
+            return false;
+        }
+        else{
+            $.each(featureGroup._layers, function(key, value){
+                if(value.edit){
 
-        $.each(featureGroup._layers, function(key, value){
-            if(value.edit){
+                    geoObject = value.toGeoJSON();
 
-                geoObject = value.toGeoJSON();
+                    cartodbID = geoObject.properties.cartodb_id;
+                    cartodbID_array.push(cartodbID);
 
-                cartodbID = geoObject.properties.cartodb_id;
-                cartodbID_array.push(cartodbID);
+                    notes = value.notes;
+                    notes_array.push(notes);
 
-                notes = value.notes;
-                notes_array.push(notes);
+                    type = geoObject.geometry.type;
+                    type_array.push(type);
 
-                type = geoObject.geometry.type;
-                type_array.push(type);
+                    //DELETE THESE PROPERTIES SO THEY ARE NOT PASSED INTO THE GEOJSON ITSELF - CARTODB CAN'T SEEM TO HANDLE GEOJSON THE WAY IT WOULD BE FORMATTED IF THESE WERE INCLUDED
+                    delete geoObject.properties.cartodb_id;
+                    delete geoObject.properties.notes;
 
-                //DELETE THESE PROPERTIES SO THEY ARE NOT PASSED INTO THE GEOJSON ITSELF - CARTODB CAN'T SEEM TO HANDLE GEOJSON THE WAY IT WOULD BE FORMATTED IF THESE WERE INCLUDED
-                delete geoObject.properties.cartodb_id;
-                delete geoObject.properties.notes;
+                    geoObjectString = JSON.stringify(value.toGeoJSON());
+                    geoObjectString_array.push(geoObjectString);
+                }
+            });
 
-                geoObjectString = JSON.stringify(value.toGeoJSON());
-                geoObjectString_array.push(geoObjectString);
-            }
-        });
+            for(i = 0; i < geoObjectString_array.length; i++){
+                $('#admin_doodle_form').append('<input type="hidden" name="geoObject['+i+']" value='+geoObjectString_array[i]+' />');
+                $('#admin_doodle_form').append('<input type="hidden" name="cartodbID['+i+']" value='+cartodbID_array[i]+' />');
+                $('#admin_doodle_form').append('<input type="hidden" name="type['+i+']" value='+type_array[i]+' />');
+                $('#admin_doodle_form').append('<input type="hidden" name="notes['+i+']" value="'+notes_array[i]+'" />');
+            };
 
-        for(i = 0; i < geoObjectString_array.length; i++){
-            $('#admin_doodle_form').append('<input type="hidden" name="geoObject['+i+']" value='+geoObjectString_array[i]+' />');
-            $('#admin_doodle_form').append('<input type="hidden" name="cartodbID['+i+']" value='+cartodbID_array[i]+' />');
-            $('#admin_doodle_form').append('<input type="hidden" name="type['+i+']" value='+type_array[i]+' />');
-            $('#admin_doodle_form').append('<input type="hidden" name="notes['+i+']" value="'+notes_array[i]+'" />');
+            for(j = 0; j < deletedID_array.length; j++){
+                $('#admin_doodle_form').append('<input type="hidden" name="deletedID['+j+']" value='+deletedID_array[j]+' />');
+                $('#admin_doodle_form').append('<input type="hidden" name="deletedType['+j+']" value='+deletedType_array[j]+' />');
+            };
         };
-
-        for(j = 0; j < deletedID_array.length; j++){
-            $('#admin_doodle_form').append('<input type="hidden" name="deletedID['+j+']" value='+deletedID_array[j]+' />');
-            $('#admin_doodle_form').append('<input type="hidden" name="deletedType['+j+']" value='+deletedType_array[j]+' />');
-        };
-
-
+        
     });
     
 });
