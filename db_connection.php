@@ -1,7 +1,7 @@
 <?php
 
-$cartodb_username = "**";
-$api_key = "**";
+$cartodb_username = "***";
+$api_key = "***";
 
 $geoObject_array = $_POST['geoObject'];
 $type_array = $_POST['type'];
@@ -11,9 +11,9 @@ foreach($geoObject_array as $key => $value){
     
     //THE ORIGINAL GEOJSON STRING HAS A FIXED NUMBER OF EXTRA LEADING/TRAILING CHARACTERS
     $value = substr($value, 45, -1);
-    $value = "'" . $value . "'";
+    $value = "'" . str_replace("'", "", $value) . "'";
     
-    $type = strtolower($type_array[$key]);
+    $type = str_replace("'", "", strtolower($type_array[$key]));
     
     $notes = "'" . str_replace("'", "", $notes_array[$key]) . "'";
         
