@@ -1,5 +1,5 @@
 # carto_doodle
-Carto Doodle is a simple map geometry drawing and editing interface that uses CartoDB for data storage and visualization.
+Carto Doodle is a simple map geometry drawing and editing interface that uses CartoDB for data storage and visualization.  This is a very stripped-down app, developed to achieve a basic function - to allow users to draw and edit any number and type of map geometries.  I have not done any styling apart from what is minimally necessary.  I am sure that there are many places that the code can be improved, but I have tried to present it here in very basic units so that others may use it and customize it as they see fit.
 
 Working demo:</br>
 Drawing tool - http://field-set.com/carto_doodle/index.html</br>
