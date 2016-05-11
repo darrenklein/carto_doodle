@@ -21,9 +21,19 @@ body{
 
 form{
     display: inline-block;
+    width: 30%;
     margin: auto;
 }
 
 #submit{
-    width: 400px;
+    width: 100%;
+    background-color: #11CDFF;
+    border: 0;
+    font-size: 20px;
+    letter-spacing: 2px;
+    cursor: pointer;
+}
+
+#submit:hover{
+    background-color: #12A9FF;
 }
