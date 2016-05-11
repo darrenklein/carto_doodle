@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 
 <head>
+    
+    <title>Carto Doodle - Administrator</title>
+    
     <!--STOPS CACHING SO THAT MAP EDITS RELOAD FRESH-->
     <meta http-equiv="cache-control" content="max-age=0" />
     <meta http-equiv="cache-control" content="no-cache" />
@@ -11,22 +14,30 @@
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
     <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.15/themes/css/cartodb.css" />
     <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.3/leaflet.draw.css' rel='stylesheet' />
-    
-    <style>
-        #map{
-            height: 500px;
-        }
-    </style>
+    <link rel="stylesheet" href="stylesheet.css" />
     
 </head>
 
 <body>
     
+    <div id="title">Carto Doodle - Administrator</div>
+    
+    <div id="instructions">
+        <ul>
+            <li>Use the tools on the left of the map to edit the geometries</li>
+            <li>Make as many changes as you like!</li>
+            <li>Don't forget to click 'Save' on the menu bar (or popups) after making your changes</li>
+            <li>Click 'Submit' when you are done</li>
+        </ul>
+    </div>
+    
     <div id="map"></div>
 
-    <form id='admin_doodle_form' action='admin_db_connection.php' method='post'>
-        <input type='submit' value='Submit' />
-    </form>
+    <div id="form_container">
+        <form id='admin_doodle_form' action='admin_db_connection.php' method='post'>
+            <input type='submit' id='submit' value='Submit' />
+        </form>
+    </div>
 
     <script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
     <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>

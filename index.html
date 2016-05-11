@@ -3,26 +3,34 @@
 
 <head>
 
+    <title>Carto Doodle</title>
     
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
     <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.3/leaflet.draw.css' rel='stylesheet' />
-    
-    <style>
-        #map{
-            height: 500px;
-        }
-    </style>
+    <link rel="stylesheet" href="stylesheet.css" />
     
 </head>
 
 <body>
     
+    <div id="title">Carto Doodle</div>
+    
+    <div id="instructions">
+        <ul>
+            <li>Use the tools on the left of the map to draw points, lines, or polygons</li>
+            <li>Create as many as you like!</li>
+            <li>Click 'Submit' when you are done</li>
+        </ul>
+    </div>
+    
     <div id="map"></div>
 
-    <form id='doodle_form' action='db_connection.php' method='post'>
-        <input type='submit' value='Submit' />
-    </form>
-    
+    <div id="form_container">
+        <form id='doodle_form' action='db_connection.php' method='post'>
+            <input type='submit' id='submit' value='Submit' />
+        </form>
+    </div>
+
     <script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
     <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
     <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.3/leaflet.draw.js'></script>    

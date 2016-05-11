@@ -1,0 +1,29 @@
+body{
+    font-family: sans-serif;
+}
+
+#title{
+    font-size: 35px;
+}
+
+#map{
+    height: 500px;
+    width: 85%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+#form_container{
+    text-align: center;
+}
+
+form{
+    display: inline-block;
+    margin: auto;
+}
+
+#submit{
+    width: 400px;
+}
