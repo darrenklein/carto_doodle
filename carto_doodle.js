@@ -52,8 +52,12 @@ $(document).ready(function(){
 
     //ARRAYS TO HOLD INPUT VALUES - USED TO GET LENGTH COUNTS AND ADD INDEXES TO INPUTS CREATED ON SUBMIT FOR PROCESSING BY PHP
     geoObjectString_array = [];
-    type_array = [];
+    //type_array = [];
     notes_array = [];
+    
+    
+    //YOU'LL NEED ARRAYS HERE FOR THE THREE TYPES OF OJBECTS - POINT, LINE, POLYGON
+    //CAN ACTUALLY GET RID OF TYPE ARRAY ABOVE - CAN JUST FILL THIS IN IN PHP
 
 
     $("#doodle_form").submit(function(){
@@ -64,17 +68,22 @@ $(document).ready(function(){
         }
         else{
             $.each(featureGroup._layers, function(key, value){
+                
+                //IN HERE, GET THE TYPE - FOR EACH TYPE, PUSH TO THE ARRAYS ABOVE WITH IFS
+                
                 geoObject = value.toGeoJSON();
                 geoObjectString = JSON.stringify(value.toGeoJSON());
                 geoObjectString_array.push(geoObjectString);
 
                 type = geoObject.geometry.type;
-                type_array.push(type);
+                //type_array.push(type);
 
                 notes = value.notes;
                 notes_array.push(notes);
             });
 
+            //WILL NEED THREE FOR LOOPS AS BELOW, ONE FOR EACH GEOMETRY TYPE
+            
             for(i = 0; i < geoObjectString_array.length; i++){
                 $('#doodle_form').append('<input type="hidden" name="geoObject['+i+']" value='+geoObjectString_array[i]+' />');
                 $('#doodle_form').append('<input type="hidden" name="type['+i+']" value='+type_array[i]+' />');

@@ -7,6 +7,8 @@ $geoObject_array = $_POST['geoObject'];
 $type_array = $_POST['type'];
 $notes_array = $_POST['notes'];
 
+//HERE USE THREE FOREACH, ONE FOR EACH GEOMETRY TYPE, BUILDING SQL AND CURLING - THIS WAY, ONLY THREE CURLS
+
 foreach($geoObject_array as $key => $value){
     
     //THE ORIGINAL GEOJSON STRING HAS A FIXED NUMBER OF EXTRA LEADING/TRAILING CHARACTERS
