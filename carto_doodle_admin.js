@@ -101,7 +101,8 @@ $(document).ready(function(){
     
     
     
-    $("#test").click(function(){
+    $("#admin_doodle_form").submit(function(){
+        
         if(edited_array.length == 0 && deletedPointID_array.length == 0 && deletedPolygonID_array.length == 0 && deletedLineStringID_array.length == 0){
             alert("You haven't made any changes.");
             return false;
@@ -173,50 +174,4 @@ $(document).ready(function(){
     });
     
 
-    /*
-    $("#admin_doodle_form").submit(function(){
-        
-        if(edited_array.length == 0 && deletedID_array.length == 0){
-            alert("You haven't made any changes.");
-            return false;
-        }
-        else{
-            $.each(featureGroup._layers, function(key, value){
-                if(value.edit){
-
-                    geoObject = value.toGeoJSON();
-
-                    cartodbID = geoObject.properties.cartodb_id;
-                    cartodbID_array.push(cartodbID);
-
-                    notes = value.notes;
-                    notes_array.push(notes);
-
-                    type = geoObject.geometry.type;
-                    type_array.push(type);
-
-                    //DELETE THESE PROPERTIES SO THEY ARE NOT PASSED INTO THE GEOJSON ITSELF - CARTODB CAN'T SEEM TO HANDLE GEOJSON THE WAY IT WOULD BE FORMATTED IF THESE WERE INCLUDED
-                    delete geoObject.properties.cartodb_id;
-                    delete geoObject.properties.notes;
-
-                    geoObjectString = JSON.stringify(value.toGeoJSON());
-                    geoObjectString_array.push(geoObjectString);
-                }
-            });
-
-            for(i = 0; i < geoObjectString_array.length; i++){
-                $('#admin_doodle_form').append('<input type="hidden" name="geoObject['+i+']" value='+geoObjectString_array[i]+' />');
-                $('#admin_doodle_form').append('<input type="hidden" name="cartodbID['+i+']" value='+cartodbID_array[i]+' />');
-                $('#admin_doodle_form').append('<input type="hidden" name="type['+i+']" value='+type_array[i]+' />');
-                $('#admin_doodle_form').append('<input type="hidden" name="notes['+i+']" value="'+notes_array[i]+'" />');
-            };
-
-            for(j = 0; j < deletedID_array.length; j++){
-                $('#admin_doodle_form').append('<input type="hidden" name="deletedID['+j+']" value='+deletedID_array[j]+' />');
-                $('#admin_doodle_form').append('<input type="hidden" name="deletedType['+j+']" value='+deletedType_array[j]+' />');
-            };
-        };
-        
-    });
-    */
 });
