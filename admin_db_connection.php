@@ -11,13 +11,14 @@ $editedPolygon_array = $_POST['editedPolygon'];
 $editedPolygonNotes_array = $_POST['editedPolygonNotes'];
 $editedPolygonID_array = $_POST['editedPolygonID'];
 
-$editedLineString_array = $POST['editedLineString'];
+$editedLineString_array = $_POST['editedLineString'];
 $editedLineStringNotes_array = $_POST['editedLineStringNotes'];
 $editedLineStringID_array = $_POST['editedLineStringID'];
 
 $editedPoint_values = '';
 $editedPolygon_values = '';
 $editedLineString_values = '';
+
 
 function cURL($cartodb_username, $cartoDBsql, $api_key){
     // Initializing curl
@@ -31,6 +32,7 @@ function cURL($cartodb_username, $cartoDBsql, $api_key){
     //----------------
 };
 
+
 foreach($editedPoint_array as $key => $value){
     $value = substr($value, 29, -1);
     $value = str_replace("'", "", $value);
@@ -40,14 +42,48 @@ foreach($editedPoint_array as $key => $value){
     $cartodbID = $editedPointID_array[$key];
     
     if($key == (count($editedPoint_array) - 1)){
-        $editedPoint_values .= "()";
-        $cartoDBsql = "UPDATE carto_doodle_point AS t SET the_geom = c.the_geom FROM (values ($GeoJSON, $cartodbID)) AS c(the_geom, cartodb_id) WHERE c.cartodb_id = t.cartodb_id";
+        $editedPoint_values .= "($GeoJSON, '$notes', $cartodbID)";
+        $cartoDBsql = "UPDATE carto_doodle_point AS t SET the_geom = c.the_geom, notes = c.notes FROM (values $editedPoint_values) AS c(the_geom, notes, cartodb_id) WHERE c.cartodb_id = t.cartodb_id";
         cURL($cartodb_username, $cartoDBsql, $api_key);
-        
-        echo $cartoDBsql;
     }
     else{
-        $point_values .= "(),";
+        $editedPoint_values .= "($GeoJSON, '$notes', $cartodbID),";
+    };
+};
+
+foreach($editedPolygon_array as $key => $value){
+    $value = substr($value, 29, -1);
+    $value = str_replace("'", "", $value);
+    $GeoJSON = "(ST_SetSRID(ST_GeomFromGeoJSON('$value'), 4326))";
+    
+    $notes = str_replace("'", "", $editedPolygonNotes_array[$key]);
+    $cartodbID = $editedPolygonID_array[$key];
+    
+    if($key == (count($editedPolygon_array) - 1)){
+        $editedPolygon_values .= "($GeoJSON, '$notes', $cartodbID)";
+        $cartoDBsql = "UPDATE carto_doodle_polygon AS t SET the_geom = c.the_geom, notes = c.notes FROM (values $editedPolygon_values) AS c(the_geom, notes, cartodb_id) WHERE c.cartodb_id = t.cartodb_id";
+        cURL($cartodb_username, $cartoDBsql, $api_key);
+    }
+    else{
+        $editedPolygon_values .= "($GeoJSON, '$notes', $cartodbID),";
+    };
+};
+
+foreach($editedLineString_array as $key => $value){
+    $value = substr($value, 29, -1);
+    $value = str_replace("'", "", $value);
+    $GeoJSON = "(ST_SetSRID(ST_GeomFromGeoJSON('$value'), 4326))";
+    
+    $notes = str_replace("'", "", $editedLineStringNotes_array[$key]);
+    $cartodbID = $editedLineStringID_array[$key];
+    
+    if($key == (count($editedLineString_array) - 1)){
+        $editedLineString_values .= "($GeoJSON, '$notes', $cartodbID)";
+        $cartoDBsql = "UPDATE carto_doodle_line AS t SET the_geom = c.the_geom, notes = c.notes FROM (values $editedLineString_values) AS c(the_geom, notes, cartodb_id) WHERE c.cartodb_id = t.cartodb_id";
+        cURL($cartodb_username, $cartoDBsql, $api_key);
+    }
+    else{
+        $editedLineString_values .= "($GeoJSON, '$notes', $cartodbID),";
     };
 };
 
