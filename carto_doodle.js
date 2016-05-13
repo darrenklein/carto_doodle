@@ -57,42 +57,48 @@ $(document).ready(function(){
     
     $("#doodle_form").submit(function(){
         
-         $.each(featureGroup._layers, function(key, value){
-         
-            geoObject = value.toGeoJSON();
-            geoObjectString = JSON.stringify(value.toGeoJSON());
-            type = geoObject.geometry.type;
-            notes = value.notes;
-             
-            input_array = [geoObjectString, notes];
-             
-            if(type === 'Point'){
-                point_array.push(input_array);
-            }
-            else if(type === 'Polygon'){
-                polygon_array.push(input_array);
-            }
-            else{
-                linestring_array.push(input_array);
+        if(Object.keys(featureGroup._layers).length == 0){
+            alert("You haven't added anything to the map.");
+            return false;
+        }
+        else{
+            $.each(featureGroup._layers, function(key, value){
+
+                geoObject = value.toGeoJSON();
+                geoObjectString = JSON.stringify(value.toGeoJSON());
+                type = geoObject.geometry.type;
+                notes = value.notes;
+
+                input_array = [geoObjectString, notes];
+
+                if(type === 'Point'){
+                    point_array.push(input_array);
+                }
+                else if(type === 'Polygon'){
+                    polygon_array.push(input_array);
+                }
+                else{
+                    linestring_array.push(input_array);
+                };
+
+             });
+
+            for(i = 0; i < point_array.length; i++){
+                $('#doodle_form').append('<input type="hidden" name="point['+i+']" value='+point_array[i][0]+' />');
+                $('#doodle_form').append('<input type="hidden" name="point_notes['+i+']" value="'+point_array[i][1]+'" />');
             };
-         
-         });
+
+            for(j = 0; j < polygon_array.length; j++){
+                $('#doodle_form').append('<input type="hidden" name="polygon['+j+']" value='+polygon_array[j]+' />');
+                $('#doodle_form').append('<input type="hidden" name="polygon_notes['+j+']" value="'+polygon_array[j][1]+'" />');
+            };
+
+            for(k = 0; k < linestring_array.length; k++){
+                $('#doodle_form').append('<input type="hidden" name="linestring['+k+']" value='+linestring_array[k]+' />');
+                $('#doodle_form').append('<input type="hidden" name="linestring_notes['+k+']" value="'+linestring_array[k][1]+'" />');
+            };
+        }; 
         
-        for(i = 0; i < point_array.length; i++){
-            $('#doodle_form').append('<input type="hidden" name="point['+i+']" value='+point_array[i][0]+' />');
-            $('#doodle_form').append('<input type="hidden" name="point_notes['+i+']" value="'+point_array[i][1]+'" />');
-        };
-        
-        for(j = 0; j < polygon_array.length; j++){
-            $('#doodle_form').append('<input type="hidden" name="polygon['+j+']" value='+polygon_array[j]+' />');
-            $('#doodle_form').append('<input type="hidden" name="polygon_notes['+j+']" value="'+polygon_array[j][1]+'" />');
-        };
-        
-        for(k = 0; k < linestring_array.length; k++){
-            $('#doodle_form').append('<input type="hidden" name="linestring['+k+']" value='+linestring_array[k]+' />');
-            $('#doodle_form').append('<input type="hidden" name="linestring_notes['+k+']" value="'+linestring_array[k][1]+'" />');
-        };
-    
     });
-     
+      
 });
