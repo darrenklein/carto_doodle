@@ -11,7 +11,7 @@ $(document).ready(function(){
             
     var featureGroup = new L.FeatureGroup();
 
-    var url_array = ["https://YOUR_USERNAME_HERE.cartodb.com/api/v2/sql?format=geojson&q=SELECT cartodb_id,the_geom,notes FROM carto_doodle_point", "https://YOUR_USERNAME_HERE.cartodb.com/api/v2/sql?format=geojson&q=SELECT cartodb_id,the_geom,notes FROM carto_doodle_polygon", "https://YOUR_USERNAME_HERE.cartodb.com/api/v2/sql?format=geojson&q=SELECT cartodb_id,the_geom,notes FROM carto_doodle_line"];
+    var url_array = ["https://skwidbreth.cartodb.com/api/v2/sql?format=geojson&q=SELECT cartodb_id,the_geom,notes FROM carto_doodle_point", "https://skwidbreth.cartodb.com/api/v2/sql?format=geojson&q=SELECT cartodb_id,the_geom,notes FROM carto_doodle_polygon", "https://skwidbreth.cartodb.com/api/v2/sql?format=geojson&q=SELECT cartodb_id,the_geom,notes FROM carto_doodle_line"];
     
     
     //USED LATER, AS PART OF FORM VALIDATION
@@ -71,24 +71,109 @@ $(document).ready(function(){
     });
     
     //CAPTURES KEY ATTRIBUTES ABOUT DELETED OBJECTS FOR PROCESSING BY PHP - USED TO GET LENGTH COUNTS AND ADD INDEXES TO INPUTS CREATED ON SUBMIT FOR PROCESSING BY PHP
-    deletedID_array = [];
-    deletedType_array = [];
+    deletedPointID_array = [];
+    deletedPolygonID_array = [];
+    deletedLineStringID_array = [];
 
     map.on('draw:deleted', function(e){
+        
         e.layers.eachLayer(function(layer){
-            deletedID_array.push(layer.feature.properties.cartodb_id);
-            deletedType_array.push(layer.feature.geometry.type);
+            type = layer.feature.geometry.type;
+            
+            if(type === 'Point'){
+                deletedPointID_array.push(layer.feature.properties.cartodb_id); 
+            }
+            else if(type === 'Polygon'){
+                deletedPolygonID_array.push(layer.feature.properties.cartodb_id); 
+            }
+            else{
+                deletedLineStringID_array.push(layer.feature.properties.cartodb_id);
+            }; 
         });
+        
     });
 
 
     //ARRAYS TO HOLD INPUT VALUES - USED TO GET LENGTH COUNTS AND ADD INDEXES TO INPUTS CREATED ON SUBMIT FOR PROCESSING BY PHP
-    geoObjectString_array = [];
-    cartodbID_array = [];
-    type_array = [];
-    notes_array = [];
+    editedPoint_array = [];
+    editedPolygon_array = [];
+    editedLineString_array = [];
+    
+    
+    
+    $("#test").click(function(){
+        if(edited_array.length == 0 && deletedPointID_array.length == 0 && deletedPolygonID_array.length == 0 && deletedLineStringID_array.length == 0){
+            alert("You haven't made any changes.");
+            return false;
+        }
+        else{
+            $.each(featureGroup._layers, function(key, value){
+                    if(value.edit){
+
+                        geoObject = value.toGeoJSON();
+                        cartodbID = geoObject.properties.cartodb_id;
+                        notes = value.notes;
+                        type = geoObject.geometry.type;
+
+                        //DELETE THESE PROPERTIES SO THEY ARE NOT PASSED INTO THE GEOJSON ITSELF - CARTODB CAN'T SEEM TO HANDLE GEOJSON THE WAY IT WOULD BE FORMATTED IF THESE WERE INCLUDED
+                        delete geoObject.properties.cartodb_id;
+                        delete geoObject.properties.notes;
+
+                        geoObjectString = JSON.stringify(value.toGeoJSON());
+
+                        input_array = [geoObjectString, "'" + notes + "'", cartodbID];
+
+                        if(type === 'Point'){
+                            editedPoint_array.push(input_array);
+                        }
+                        else if(type === 'Polygon'){
+                            editedPolygon_array.push(input_array);
+                        }
+                        else{
+                            editedLineString_array.push(input_array);
+                        };
+
+                    }
+                });
 
 
+            //EDITED INPUTS
+            for(a = 0; a < editedPoint_array.length; a++){
+                $('#admin_doodle_form').append('<input type="hidden" name="editedPoint['+a+']" value='+editedPoint_array[a][0]+' />');
+                $('#admin_doodle_form').append('<input type="hidden" name="editedPointNotes['+a+']" value='+editedPoint_array[a][1]+' />');
+                $('#admin_doodle_form').append('<input type="hidden" name="editedPointID['+a+']" value='+editedPoint_array[a][2]+' />');
+            };
+
+            for(b = 0; b < editedPolygon_array.length; b++){
+                $('#admin_doodle_form').append('<input type="hidden" name="editedPolygon['+b+']" value='+editedPolygon_array[b][0]+' />');
+                $('#admin_doodle_form').append('<input type="hidden" name="editedPolygonNotes['+b+']" value='+editedPolygon_array[b][1]+' />');
+                $('#admin_doodle_form').append('<input type="hidden" name="editedPolygonID['+b+']" value='+editedPolygon_array[b][2]+' />');
+            };
+
+            for(c = 0; c < editedLineString_array.length; c++){
+                $('#admin_doodle_form').append('<input type="hidden" name="editedLineString['+c+']" value='+editedLineString_array[c][0]+' />');
+                $('#admin_doodle_form').append('<input type="hidden" name="editedLineStringNotes['+c+']" value='+editedLineString_array[c][1]+' />');
+                $('#admin_doodle_form').append('<input type="hidden" name="editedLineStringID['+c+']" value='+editedLineString_array[c][2]+' />');
+            };
+
+            //DELETED INPUTS
+            for(i = 0; i < deletedPointID_array.length; i++){
+                $('#admin_doodle_form').append('<input type="hidden" name="deletedPointID['+i+']" value='+deletedPointID_array[i]+' />');
+            };
+
+            for(j = 0; j < deletedPolygonID_array.length; j++){
+                $('#admin_doodle_form').append('<input type="hidden" name="deletedPolygonID['+j+']" value='+deletedPolygonID_array[j]+' />');
+            };
+
+            for(k = 0; k < deletedLineStringID_array.length; k++){
+                $('#admin_doodle_form').append('<input type="hidden" name="deletedLineStringID['+k+']" value='+deletedLineStringID_array[k]+' />');
+            };
+        };
+        
+    });
+    
+
+    /*
     $("#admin_doodle_form").submit(function(){
         
         if(edited_array.length == 0 && deletedID_array.length == 0){
@@ -133,5 +218,5 @@ $(document).ready(function(){
         };
         
     });
-    
+    */
 });
