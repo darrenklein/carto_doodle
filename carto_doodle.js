@@ -49,15 +49,6 @@ $(document).ready(function(){
         });
     });
     
-
-    
-    
-    
-    
-    
-    
-    
-    
     
     point_array = [];
     polygon_array = [];
@@ -88,66 +79,20 @@ $(document).ready(function(){
          });
         
         for(i = 0; i < point_array.length; i++){
-            $('#doodle_form').append('<input type="text" name="point['+i+']" value='+point_array[i][0]+' />');
-            $('#doodle_form').append('<input type="text" name="point_notes['+i+']" value="'+point_array[i][1]+'" />');
+            $('#doodle_form').append('<input type="hidden" name="point['+i+']" value='+point_array[i][0]+' />');
+            $('#doodle_form').append('<input type="hidden" name="point_notes['+i+']" value="'+point_array[i][1]+'" />');
         };
         
         for(j = 0; j < polygon_array.length; j++){
-            $('#doodle_form').append('<input type="text" name="polygon['+j+']" value='+polygon_array[j]+' />');
-            $('#doodle_form').append('<input type="text" name="polygon_notes['+j+']" value="'+polygon_array[j][1]+'" />');
+            $('#doodle_form').append('<input type="hidden" name="polygon['+j+']" value='+polygon_array[j]+' />');
+            $('#doodle_form').append('<input type="hidden" name="polygon_notes['+j+']" value="'+polygon_array[j][1]+'" />');
         };
         
         for(k = 0; k < linestring_array.length; k++){
-            $('#doodle_form').append('<input type="text" name="linestring['+k+']" value='+linestring_array[k]+' />');
-            $('#doodle_form').append('<input type="text" name="linestring_notes['+k+']" value="'+linestring_array[k][1]+'" />');
+            $('#doodle_form').append('<input type="hidden" name="linestring['+k+']" value='+linestring_array[k]+' />');
+            $('#doodle_form').append('<input type="hidden" name="linestring_notes['+k+']" value="'+linestring_array[k][1]+'" />');
         };
     
     });
-    
-    
-    
-    /*
-    //ARRAYS TO HOLD INPUT VALUES - USED TO GET LENGTH COUNTS AND ADD INDEXES TO INPUTS CREATED ON SUBMIT FOR PROCESSING BY PHP
-    geoObjectString_array = [];
-    //type_array = [];
-    notes_array = [];
-    
-    //YOU'LL NEED ARRAYS HERE FOR THE THREE TYPES OF OJBECTS - POINT, LINE, POLYGON
-    //CAN ACTUALLY GET RID OF TYPE ARRAY ABOVE - CAN JUST FILL THIS IN IN PHP
-
-
-    $("#doodle_form").submit(function(){
-
-        if(Object.keys(featureGroup._layers).length == 0){
-            alert("You haven't added anything to the map.");
-            return false;
-        }
-        else{
-            $.each(featureGroup._layers, function(key, value){
-                
-                //IN HERE, GET THE TYPE - FOR EACH TYPE, PUSH TO THE ARRAYS ABOVE WITH IFS
-                
-                geoObject = value.toGeoJSON();
-                geoObjectString = JSON.stringify(value.toGeoJSON());
-                geoObjectString_array.push(geoObjectString);
-
-                type = geoObject.geometry.type;
-                //type_array.push(type);
-
-                notes = value.notes;
-                notes_array.push(notes);
-            });
-
-            //WILL NEED THREE FOR LOOPS AS BELOW, ONE FOR EACH GEOMETRY TYPE
-            
-            for(i = 0; i < geoObjectString_array.length; i++){
-                $('#doodle_form').append('<input type="hidden" name="geoObject['+i+']" value='+geoObjectString_array[i]+' />');
-                $('#doodle_form').append('<input type="hidden" name="type['+i+']" value='+type_array[i]+' />');
-                $('#doodle_form').append('<input type="hidden" name="notes['+i+']" value="'+notes_array[i]+'" />');
-            };
-        };
-
-    });
-    */
      
 });
