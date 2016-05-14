@@ -1,7 +1,7 @@
 <?php
 
-$cartodb_username = "***";
-$api_key = "***";
+$cartodb_username = "**";
+$api_key = "**";
 
 $editedPoint_array = $_POST['editedPoint'];
 $editedPointNotes_array = $_POST['editedPointNotes'];
@@ -87,6 +87,36 @@ foreach($editedLineString_array as $key => $value){
     };
 };
 
+
+
+
+
+
+
+
+
+$deletedPointID_array = $_POST['deletedPointID'];
+$deletedPolygonID_array = $_POST['deletedPolygonID'];
+$deletedLineStringID_array = $_POST['deletedLineStringID'];
+
+$deletedPoint_values = '';
+
+foreach($deletedPointID_array as $key => $value){
+    
+    $cartodbID = $deletedPointID_array[$key];
+    
+    echo $key;
+    
+    if($key == (count($deletedPointID_array) - 1)){
+        echo "yo";
+        $deletedPoint_values .= $cartodbID;
+        $cartoDBsql = "DELETE FROM carto_doodle_point WHERE cartodb_id IN ($deletedPoint_values)";
+        cURL($cartodb_username, $cartoDBsql, $api_key);
+    }
+    else{
+        $deletedPoint_values .= "$cartodbID,";
+    };
+};
 
 /*
 $geoObject_array = $_POST['geoObject'];
