@@ -1,7 +1,7 @@
 <?php
 
-$cartodb_username = "**";
-$api_key = "**";
+$cartodb_username = "***";
+$api_key = "***";
 
 $editedPoint_array = $_POST['editedPoint'];
 $editedPointNotes_array = $_POST['editedPointNotes'];
@@ -89,26 +89,20 @@ foreach($editedLineString_array as $key => $value){
 
 
 
-
-
-
-
-
-
 $deletedPointID_array = $_POST['deletedPointID'];
 $deletedPolygonID_array = $_POST['deletedPolygonID'];
 $deletedLineStringID_array = $_POST['deletedLineStringID'];
 
 $deletedPoint_values = '';
+$deletedPolygon_values = '';
+$deletedLineString_values = '';
+
 
 foreach($deletedPointID_array as $key => $value){
     
     $cartodbID = $deletedPointID_array[$key];
     
-    echo $key;
-    
     if($key == (count($deletedPointID_array) - 1)){
-        echo "yo";
         $deletedPoint_values .= $cartodbID;
         $cartoDBsql = "DELETE FROM carto_doodle_point WHERE cartodb_id IN ($deletedPoint_values)";
         cURL($cartodb_username, $cartoDBsql, $api_key);
@@ -118,95 +112,36 @@ foreach($deletedPointID_array as $key => $value){
     };
 };
 
-/*
-$geoObject_array = $_POST['geoObject'];
-$cartodbID_array = $_POST['cartodbID'];
-$notes_array = $_POST['notes'];
-$type_array = $_POST['type'];
-
-//FIRST, WE HANDLE EDITED OBJECTS
-foreach($geoObject_array as $key => $value){
+foreach($deletedPolygonID_array as $key => $value){
     
-    //THE ORIGINAL GEOJSON STRING HAS A FIXED NUMBER OF EXTRA LEADING/TRAILING CHARACTERS
-    $value = substr($value, 29, -1);
-    $value = "'" . str_replace("'", "", $value) . "'";
+    $cartodbID = $deletedPolygonID_array[$key];
     
-    $cartodbID = str_replace("'", "", $cartodbID_array[$key]);
-    
-    $notes = "'" . str_replace("'", "", $notes_array[$key]) . "'";
-    
-    $type = str_replace("'", "", strtolower($type_array[$key]));
-        
-    $destination;
-    
-    
-    if($type == 'polygon'){
-        $GeoJSON = "(ST_SetSRID(ST_GeomFromGeoJSON($value), 4326))";
-        $destination = "$type";
-    }
-    elseif($type == 'point'){
-        $GeoJSON = "(ST_SetSRID(ST_GeomFromGeoJSON($value), 4326))";
-        $destination = "$type";
+    if($key == (count($deletedPolygonID_array) - 1)){
+        $deletedPolygon_values .= $cartodbID;
+        $cartoDBsql = "DELETE FROM carto_doodle_polygon WHERE cartodb_id IN ($deletedPolygon_values)";
+        cURL($cartodb_username, $cartoDBsql, $api_key);
     }
     else{
-        $GeoJSON = "(ST_SetSRID(ST_GeomFromGeoJSON($value), 4326))";
-        $destination = "line";
-    }; 
-    
-    
-    $cartoDBsql = "UPDATE carto_doodle_$destination SET the_geom = $GeoJSON, notes = $notes WHERE cartodb_id = $cartodbID";
-    
-
-    // Initializing curl
-    $ch = curl_init( "https://".$cartodb_username.".cartodb.com/api/v2/sql" );
-    $query = http_build_query(array('q'=>$cartoDBsql,'api_key'=>$api_key));
-    // Configuring curl options
-    curl_setopt($ch, CURLOPT_POST, TRUE);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-    $result_not_parsed = curl_exec($ch);
-    //---------------- 
-    
-};
-
-
-
-
-$deletedID_array = $_POST['deletedID'];
-$deletedType_array = $_POST['deletedType'];
-
-//THEN WE HANDLE DELETED OBJECTS
-foreach($deletedID_array as $key => $value){
-    
-    $cartodbID = $value;
-    $type = strtolower($deletedType_array[$key]);
-
-    if($type == 'polygon'){
-        $destination = "$type";
-    }
-    elseif($type == 'point'){
-        $destination = "$type";
-    }
-    else{
-        $destination = "line";
+        $deletedPolygon_values .= "$cartodbID,";
     };
-    
-    $cartoDBsql = "DELETE FROM carto_doodle_$destination WHERE cartodb_id = $cartodbID";
-    
-   
-    // Initializing curl
-    $ch = curl_init( "https://".$cartodb_username.".cartodb.com/api/v2/sql" );
-    $query = http_build_query(array('q'=>$cartoDBsql,'api_key'=>$api_key));
-    // Configuring curl options
-    curl_setopt($ch, CURLOPT_POST, TRUE);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-    $result_not_parsed = curl_exec($ch);
-    //---------------- 
-   
 };
+
+foreach($deletedLineStringID_array as $key => $value){
+    
+    $cartodbID = $deletedLineStringID_array[$key];
+    
+    if($key == (count($deletedLineStringID_array) - 1)){
+        $deletedLineString_values .= $cartodbID;
+        $cartoDBsql = "DELETE FROM carto_doodle_line WHERE cartodb_id IN ($deletedLineString_values)";
+        cURL($cartodb_username, $cartoDBsql, $api_key);
+    }
+    else{
+        $deletedLineString_values .= "$cartodbID,";
+    };
+};
+
 
 echo "<a href='/carto_doodle/index.html'>Return to drawing tool</a></br><a href='/carto_doodle/admin.html'>Return to admin tool</a>";
 die();
-*/
+
 ?>
