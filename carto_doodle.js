@@ -102,6 +102,32 @@ $("#doodle_form").submit(function(){
     
     
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
       
 
 
@@ -109,15 +135,12 @@ $("#doodle_form").submit(function(){
 
 
 
+//var geoJSONArray;
 
-
-function save(){
-    
-    $('#export_table_container').empty();
-    $('body').append('<table id="export_table"><tr><th>GeoJSON</th></tr></table>');
+function save(){    
     
     
-    
+    geoJSONArray = [];
     
     if(Object.keys(featureGroup._layers).length == 0){
         alert("You haven't added anything to the map.");
@@ -132,46 +155,16 @@ function save(){
             type = geoObject.geometry.type;
             
             geoObjectString = JSON.stringify(geoObject);
-            geoObjectString.slice(45, -1);
+            //geoObjectString = geoObjectString.slice(45, -1);
             
-            console.log(geoObjectString);
             
-            $("#export_table").append("<tr><td>"+geoObjectString+"</td></tr>");
-
-            /*
-            input_array = [geoObjectString, notes];
-
-            if(type === 'Point'){
-                point_array.push(input_array);
-            }
-            else if(type === 'Polygon'){
-                polygon_array.push(input_array);
-            }
-            else{
-                linestring_array.push(input_array);
-            };
-            */
+            
+            geoJSONArray.push(geoObjectString);
 
          });
-
-        for(i = 0; i < point_array.length; i++){
-            
-            
-            
-//            $('#doodle_form').append('<input type="hidden" name="point['+i+']" value='+point_array[i][0]+' />');
-//            $('#doodle_form').append('<input type="hidden" name="point_notes['+i+']" value="'+point_array[i][1]+'" />');
-        };
-
-        for(j = 0; j < polygon_array.length; j++){
-//            $('#doodle_form').append('<input type="hidden" name="polygon['+j+']" value='+polygon_array[j]+' />');
-//            $('#doodle_form').append('<input type="hidden" name="polygon_notes['+j+']" value="'+polygon_array[j][1]+'" />');
-        };
-
-        for(k = 0; k < linestring_array.length; k++){
-//            $('#doodle_form').append('<input type="hidden" name="linestring['+k+']" value='+linestring_array[k]+' />');
-//            $('#doodle_form').append('<input type="hidden" name="linestring_notes['+k+']" value="'+linestring_array[k][1]+'" />');
-        };
     };
+    
+    return geoJSONArray;
 };
 
 
@@ -186,5 +179,15 @@ function save(){
 
 
 function exportGeoJSON(){
-  save();  
+    save();
+    
+    $('#export_table_container').empty();
+    $('#export_table_container').append('<table id="export_table"></table>');
+    
+    
+    $.each(geoJSONArray, function(key, value){
+    
+        $("#export_table").append("<tr><td>"+value+"</td></tr>");
+    });
+    
 };
