@@ -139,8 +139,10 @@ function save(){
          });
 
         for(i = 0; i < point_array.length; i++){
+            
+                geoObject.geometry.properties = {"notes": "test"};
 
-                console.log((point_array[i][0]).slice(45, -1))
+                console.log(geoObject.geometry)
             
 //            $('#doodle_form').append('<input type="hidden" name="point['+i+']" value='+point_array[i][0]+' />');
 //            $('#doodle_form').append('<input type="hidden" name="point_notes['+i+']" value="'+point_array[i][1]+'" />');
