@@ -5,6 +5,8 @@
 
     <title>Carto Doodle</title>
     
+    <script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+    
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
     <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.3/leaflet.draw.css' rel='stylesheet' />
     <link rel="stylesheet" href="stylesheet.css" />
@@ -24,17 +26,30 @@
     </div>
     
     <div id="map"></div>
+    
+    <div>
+        <button id='export'>Export</button>
+    </div>
 
     <div id="form_container">
         <form id='doodle_form' action='db_connection.php' method='post'>
             <input type='submit' id='submit' value='Submit' />
         </form>
     </div>
+    
 
-    <script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+
     <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
     <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.3/leaflet.draw.js'></script>    
-    <script src="carto_doodle.js"></script>   
+    <script src="carto_doodle.js"></script>
+    
+    <script>
+        $(document).on("click", "#export", function(){
+            exportGeoJSON();
+        });
+    </script>
+    
+
     
 </body>
 

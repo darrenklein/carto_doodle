@@ -102,3 +102,9 @@ $(document).ready(function(){
     });
       
 });
+
+
+
+function exportGeoJSON(){
+    alert("hi") 
+};
