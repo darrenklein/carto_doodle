@@ -112,6 +112,13 @@ $("#doodle_form").submit(function(){
 
 
 function save(){
+    
+    $('#export_table_container').empty();
+    $('body').append('<table id="export_table"><tr><th>GeoJSON</th></tr></table>');
+    
+    
+    
+    
     if(Object.keys(featureGroup._layers).length == 0){
         alert("You haven't added anything to the map.");
         return false;
@@ -120,13 +127,18 @@ function save(){
         $.each(featureGroup._layers, function(key, value){
 
             geoObject = value.toGeoJSON();
-            type = geoObject.geometry.type;
             notes = value.notes;
             geoObject.properties = {"notes": notes};
+            type = geoObject.geometry.type;
             
             geoObjectString = JSON.stringify(geoObject);
             geoObjectString.slice(45, -1);
+            
+            console.log(geoObjectString);
+            
+            $("#export_table").append("<tr><td>"+geoObjectString+"</td></tr>");
 
+            /*
             input_array = [geoObjectString, notes];
 
             if(type === 'Point'){
@@ -138,10 +150,14 @@ function save(){
             else{
                 linestring_array.push(input_array);
             };
+            */
 
          });
 
         for(i = 0; i < point_array.length; i++){
+            
+            
+            
 //            $('#doodle_form').append('<input type="hidden" name="point['+i+']" value='+point_array[i][0]+' />');
 //            $('#doodle_form').append('<input type="hidden" name="point_notes['+i+']" value="'+point_array[i][1]+'" />');
         };
