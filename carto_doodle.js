@@ -120,9 +120,12 @@ function save(){
         $.each(featureGroup._layers, function(key, value){
 
             geoObject = value.toGeoJSON();
-            geoObjectString = JSON.stringify(value.toGeoJSON());
             type = geoObject.geometry.type;
             notes = value.notes;
+            geoObject.properties = {"notes": notes};
+            
+            geoObjectString = JSON.stringify(geoObject);
+            geoObjectString.slice(45, -1);
 
             input_array = [geoObjectString, notes];
 
@@ -139,11 +142,6 @@ function save(){
          });
 
         for(i = 0; i < point_array.length; i++){
-            
-                geoObject.geometry.properties = {"notes": "test"};
-
-                console.log(geoObject.geometry)
-            
 //            $('#doodle_form').append('<input type="hidden" name="point['+i+']" value='+point_array[i][0]+' />');
 //            $('#doodle_form').append('<input type="hidden" name="point_notes['+i+']" value="'+point_array[i][1]+'" />');
         };
