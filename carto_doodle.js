@@ -21,7 +21,20 @@ var drawControl = new L.Control.Draw({
 
 
 //SETS THE POPUP CONTENT
-var popUpFields = "Properties</br><button class='add_property'>Add property</button></br><input class='popup_notes' type='text' /><button class='popup_save'>Save</button>"
+//var popUpFields = "Properties</br><input class='popup_notes' type='text' /><button class='popup_save'>Save</button>";
+
+var popUpFields = "Properties</br><button class='add_property'>Add property</button><table class='properties_container'><tr class='header_row' style='display:none'><th>Property</th><th>Value</th></tr></table><button class='popup_save'>Save</button>";
+
+
+
+$(document).on("click", ".add_property", function(){
+    $(this).next(".properties_container").find(".header_row").show();
+    $(this).next(".properties_container").append("<tr><td><input type='text' class='property' /></td><td><input type='text' class='value' /></td></tr>");
+});
+
+
+
+
 
 
 //SETS BASIC DRAWING FUNCIONALITY - AFTER GEOMETRIES ARE DRAWN, A POPUP OPENS ALLOWING USER TO INPUT NOTES. CLICKING A GEOMETRY AGAIN REOPENS THE WINDOW AND ALLOWS A USER TO EDIT THEIR NOTE.
