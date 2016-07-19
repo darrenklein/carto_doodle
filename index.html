@@ -28,7 +28,7 @@
     <div id="map"></div>
     
     <div>
-        <a id='export'>Export</a>
+        <a href='#' id='export'>Export</a>
     </div>
 
     <div id="form_container">
@@ -45,8 +45,24 @@
     <script src="carto_doodle.js"></script>
     
     <script>
-        $(document).on("click", "#export", function(){
-            exportGeoJSON();
+        //$(document).on("click", "#export", function(){
+            //exportGeoJSON();
+        
+        $("#export").on('click', function (event) {
+            
+            save();
+    
+            $('#export_table_container').empty();
+            $('#export_table_container').append('<table id="export_table"></table>');
+
+
+            $.each(geoJSONArray, function(key, value){
+                $("#export_table").append("<tr><td>"+value+"</td></tr>");
+            });
+
+            timestamp = Math.floor(Date.now()/1000);
+
+            exportTableToCSV.apply(this, [$('#export_table'), 'GeoJSON_' + timestamp + '.csv']);
         });
     </script>
     
@@ -55,3 +71,5 @@
 </body>
 
 </html>
+
+<!-- MANY THANKS TO https://bl.ocks.org/kalebdf/ee7a5e7f44416b2116c0 -->

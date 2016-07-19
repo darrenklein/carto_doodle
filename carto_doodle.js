@@ -173,18 +173,7 @@ function save(){
 
 
 
-
-
-
-
-
-
-
-
-
-function exportTableToCSV($table, filename) {
-    
-    console.log($table)
+    function exportTableToCSV($table, filename){
 
         var $rows = $table.find('tr:has(td)'),
 
@@ -217,7 +206,7 @@ function exportTableToCSV($table, filename) {
             // Data URI
             csvData = 'data:application/csv;charset=utf-8,' + encodeURIComponent(csv);
     
-        console.log(csv)
+        
 
         $(this)
             .attr({
@@ -238,7 +227,20 @@ function exportTableToCSV($table, filename) {
 
 
 
-function exportGeoJSON(){
+
+
+
+
+
+
+
+
+
+
+
+/*
+function exportGeoJSON(event){
+    
     save();
     
     $('#export_table_container').empty();
@@ -251,6 +253,7 @@ function exportGeoJSON(){
     
     timestamp = Math.floor(Date.now()/1000);
     
-    exportTableToCSV.apply(this, [$('#export_table'), 'GeoJSON_' + Math.floor(Date.now() / 1000) + '.csv']);
+    exportTableToCSV.apply(this, [$('#export_table'), 'GeoJSON_' + timestamp + '.csv']);
     
 };
+*/
