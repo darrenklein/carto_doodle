@@ -21,7 +21,7 @@ var drawControl = new L.Control.Draw({
 
 
 //SETS THE POPUP CONTENT
-var popUpFields = "What's here?</br><input class='popup_notes' type='text' /><button class='popup_save'>Save</button>"
+var popUpFields = "Properties</br><button class='add_property'>Add property</button></br><input class='popup_notes' type='text' /><button class='popup_save'>Save</button>"
 
 
 //SETS BASIC DRAWING FUNCIONALITY - AFTER GEOMETRIES ARE DRAWN, A POPUP OPENS ALLOWING USER TO INPUT NOTES. CLICKING A GEOMETRY AGAIN REOPENS THE WINDOW AND ALLOWS A USER TO EDIT THEIR NOTE.
@@ -215,45 +215,3 @@ function save(){
                 'target': '_blank'
         });
     };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-function exportGeoJSON(event){
-    
-    save();
-    
-    $('#export_table_container').empty();
-    $('#export_table_container').append('<table id="export_table"></table>');
-    
-    
-    $.each(geoJSONArray, function(key, value){
-        $("#export_table").append("<tr><td>"+value+"</td></tr>");
-    });
-    
-    timestamp = Math.floor(Date.now()/1000);
-    
-    exportTableToCSV.apply(this, [$('#export_table'), 'GeoJSON_' + timestamp + '.csv']);
-    
-};
-*/
