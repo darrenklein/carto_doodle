@@ -3,7 +3,7 @@
 
 <head>
 
-    <title>Carto Doodle</title>
+    <title>GeoJSON Exporter</title>
     
     <script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
     
@@ -15,13 +15,13 @@
 
 <body>
     
-    <div id="title">Carto Doodle</div>
+    <div id="title">GeoJSON Exporter</div>
     
     <div id="instructions">
         <ul>
             <li>Use the tools on the left of the map to draw points, lines, or polygons</li>
             <li>Create as many as you like!</li>
-            <li>Click 'Submit' when you are done</li>
+            <li>Click 'Export' to download a .csv of your GeoJSONs!</li>
         </ul>
     </div>
     
@@ -29,12 +29,6 @@
     
     <div>
         <a href='#' id='export'>Export</a>
-    </div>
-
-    <div id="form_container">
-        <form id='doodle_form' action='db_connection.php' method='post'>
-            <input type='submit' id='submit' value='Submit' />
-        </form>
     </div>
     
     <div id="export_table_container"></div>
@@ -50,7 +44,7 @@
             save();
     
             $('#export_table_container').empty();
-            $('#export_table_container').append('<table id="export_table"></table>');
+            $('#export_table_container').append('<table id="export_table" style="display:none"></table>');
 
 
             $.each(geoJSONArray, function(key, value){
