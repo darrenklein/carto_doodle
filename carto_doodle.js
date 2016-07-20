@@ -21,14 +21,7 @@ var drawControl = new L.Control.Draw({
 
 
 
-var popUpFields = "Properties</br><button class='add_property'>Add property</button><table class='properties_container'><tr class='header_row' style='display:none'><th>Property</th><th>Value</th></tr></table><button class='popup_save'>Save</button>";
 
-
-
-$(document).on("click", ".add_property", function(){
-    $(this).next(".properties_container").find(".header_row").show();
-    $(this).next(".properties_container").append("<tr class='properties_row'><td><input type='text' class='property' /></td><td><input type='text' class='value' /></td></tr>");
-});
 
 
 
@@ -37,21 +30,48 @@ $(document).on("click", ".add_property", function(){
 
 //SETS BASIC DRAWING FUNCIONALITY - AFTER GEOMETRIES ARE DRAWN, A POPUP OPENS ALLOWING USER TO INPUT NOTES. CLICKING A GEOMETRY AGAIN REOPENS THE WINDOW AND ALLOWS A USER TO EDIT THEIR NOTE.
 map.on('draw:created', function(e){
+    
+    
+    
+    
+    popUpFields = "Properties</br><button class='add_property'>Add property</button><table class='properties_container'><tr class='header_row' style='display:none'><th>Property</th><th>Value</th></tr></table><button class='popup_save'>Save</button>";
+
+
+
+    $(document).on("click", ".add_property", function(){
+        $(this).next(".properties_container").find(".header_row").show();
+        $(this).next(".properties_container").append("<tr class='properties_row'><td><input type='text' class='property' /></td><td><input type='text' class='value' /></td></tr>");
+    });
+    
+    
+    
+    
     featureGroup.addLayer(e.layer);
     e.layer.bindPopup(popUpFields).openPopup();
+    
+    
+    
 
     e.layer.on('click', function(){
-        if(e.layer.notes){
-            e.layer.bindPopup("What's here?</br><input class='popup_notes' type='text' value='"+e.layer.notes+"' /><button class='popup_save'>Save</button>").openPopup();
+        
+        if(e.layer.properties){
+            
+            console.log(this.popupContent)
+            
+            //e.layer.bindPopup(e.layer.popupContent).openPopup();
+
+            
+            $.each(e.layer.properties, function(key, value){
+                //$(this).next(".properties_container").append("<tr class='properties_row'><td><input type='text' class='property' /></td><td><input type='text' class='value' /></td></tr>");
+            });
         }
         else{
             e.layer.bindPopup(popUpFields).openPopup();
         };
-
-        $('.popup_save').click(function(){
-            e.layer.notes = $('.popup_notes').val();
-        });
     });
+    
+    
+    
 
     $('.popup_save').click(function(){
             
@@ -69,6 +89,10 @@ map.on('draw:created', function(e){
         });
         
         e.layer.properties = propertiesObject;
+        e.layer.popupContent = e.layer._popup._contentNode;
+        
+        
+        console.log(e.layer);
     });
 });
 
