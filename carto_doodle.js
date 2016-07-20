@@ -29,7 +29,7 @@ var popUpFields = "Properties</br><button class='add_property'>Add property</but
 
 $(document).on("click", ".add_property", function(){
     $(this).next(".properties_container").find(".header_row").show();
-    $(this).next(".properties_container").append("<tr><td><input type='text' class='property' /></td><td><input type='text' class='value' /></td></tr>");
+    $(this).next(".properties_container").append("<tr class='properties_row'><td><input type='text' class='property' /></td><td><input type='text' class='value' /></td></tr>");
 });
 
 
@@ -56,7 +56,16 @@ map.on('draw:created', function(e){
     });
 
     $('.popup_save').click(function(){
-        e.layer.notes = $('.popup_notes').val();
+            
+        propertiesTable = $(this).prev();
+        propertiesRows = propertiesTable.find(".properties_row");
+        
+        $(propertiesRows).each(function(){
+            console.log($(".property").val());
+            console.log($(".value").val());
+        });
+        
+        //e.layer.notes = $('.popup_notes').val();
     });
 });
 
