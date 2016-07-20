@@ -60,16 +60,22 @@ map.on('draw:created', function(e){
         propertiesTable = $(this).prev();
         propertiesRows = propertiesTable.find(".properties_row");
         
+        propertiesObject = {};
+        
         $(propertiesRows).each(function(){
-            console.log($(".property").val());
-            console.log($(".value").val());
+            
+            property = $(this).find(".property").val();
+            value = $(this).find(".value").val();
+            
+            propertiesObject[property] = value;
         });
         
-        //e.layer.notes = $('.popup_notes').val();
+        e.layer.properties = propertiesObject;
+        console.log(e.layer)
     });
 });
 
-
+/*
 point_array = [];
 polygon_array = [];
 linestring_array = [];
@@ -122,7 +128,7 @@ $("#doodle_form").submit(function(){
 });
     
     
-    
+  */  
 
 
 
