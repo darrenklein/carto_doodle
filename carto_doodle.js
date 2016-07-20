@@ -175,8 +175,7 @@ function save(){
         $.each(featureGroup._layers, function(key, value){
 
             geoObject = value.toGeoJSON();
-            notes = value.notes;
-            geoObject.properties = {"notes": notes};
+            geoObject.properties = value.properties;
             type = geoObject.geometry.type;
             
             geoObjectString = JSON.stringify(geoObject);
