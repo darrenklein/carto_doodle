@@ -40,27 +40,13 @@ $(document).on("click", ".add_property", function(){
 map.on('draw:created', function(e){
     featureGroup.addLayer(e.layer);
     e.layer.bindPopup(popupFields).openPopup();
-
-    e.layer.on('click', function(){
-        if(e.layer.properties){
-                        popupFieldsEdit = "Properties</br><button class='add_property'>Add property</button><table class='properties_container'><tr class='header_row'><th>Property</th><th>Value</th></tr>";
-            
-            $.each(e.layer.properties, function(attribute, value){
-                popupFieldsEdit += "<tr class='properties_row'><td><input type='text' class='property' value='"+attribute+"' /></td><td><input type='text' class='value' value='"+value+"' /></td></tr>";
-            });
-            
-            popupFieldsEdit += "</table><button class='popup_save'>Save</button>";
-            
-            e.layer.bindPopup(popupFieldsEdit).openPopup();
-        }
-        else{
-            e.layer.bindPopup(popupFields).openPopup();
-        };
-    });
-
+    
+    
+    
     
     //THIS IS THE PROBLEM RIGHT HERE - THE WAY THIS FUNCTION IS CALLED FUCKS THINGS UP
     $('.popup_save').click(function(){
+    //$(document).on("click", ".popup_save", function(){
             
         propertiesTable = $(this).prev();
         propertiesRows = propertiesTable.find(".properties_row");
@@ -77,6 +63,48 @@ map.on('draw:created', function(e){
         
         e.layer.properties = propertiesObject;
     });
+    
+    
+    
+    
+
+    e.layer.on('click', function(){
+        if(e.layer.properties){
+            popupFieldsEdit = "Properties</br><button class='add_property'>Add property</button><table class='properties_container'><tr class='header_row'><th>Property</th><th>Value</th></tr>";
+            
+            $.each(e.layer.properties, function(attribute, value){
+                popupFieldsEdit += "<tr class='properties_row'><td><input type='text' class='property' value='"+attribute+"' /></td><td><input type='text' class='value' value='"+value+"' /></td></tr>";
+            });
+            
+            popupFieldsEdit += "</table><button class='popup_save'>Save</button>";
+            
+            e.layer.bindPopup(popupFieldsEdit).openPopup();
+            
+            
+                $('.popup_save').click(function(){
+    //$(document).on("click", ".popup_save", function(){
+            
+        propertiesTable = $(this).prev();
+        propertiesRows = propertiesTable.find(".properties_row");
+        
+        propertiesObject = {};
+        
+        $(propertiesRows).each(function(){
+            
+            property = $(this).find(".property").val();
+            value = $(this).find(".value").val();
+            
+            propertiesObject[property] = value;
+        });
+        
+        e.layer.properties = propertiesObject;
+    });
+        }
+        else{
+            e.layer.bindPopup(popupFields).openPopup();
+        };
+    });
+
 });
 
 
