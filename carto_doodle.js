@@ -42,10 +42,12 @@ map.on('draw:created', function(e){
     e.layer.bindPopup(popupFields).openPopup();
     
     
+    
+    
+    
+    function popupSave(x){
 
-    $('.popup_save').click(function(){
-            
-        propertiesTable = $(this).prev();
+        propertiesTable = $(x).prev();
         propertiesRows = propertiesTable.find(".properties_row");
         
         propertiesObject = {};
@@ -58,6 +60,15 @@ map.on('draw:created', function(e){
             propertiesObject[property] = value;
         });
         
+        return propertiesObject;
+    };
+    
+    
+    
+    
+
+    $('.popup_save').click(function(){
+        popupSave(this);
         e.layer.properties = propertiesObject;
     });
     
@@ -77,23 +88,8 @@ map.on('draw:created', function(e){
             
             e.layer.bindPopup(popupFieldsEdit).openPopup();
             
-            
-            //NEED TO REBUILD THIS JUST AS A FUNCTION THAT GETS CALLED, NOT FULLY SPELLED OUT AS BELOW
             $('.popup_save').click(function(){
-            
-                propertiesTable = $(this).prev();
-                propertiesRows = propertiesTable.find(".properties_row");
-
-                propertiesObject = {};
-
-                $(propertiesRows).each(function(){
-
-                    property = $(this).find(".property").val();
-                    value = $(this).find(".value").val();
-
-                    propertiesObject[property] = value;
-                });
-
+                popupSave(this);
                 e.layer.properties = propertiesObject;
             });
         }
