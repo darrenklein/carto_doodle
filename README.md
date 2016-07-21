@@ -24,4 +24,4 @@ Editing tool - http://field-set.com/carto_doodle/admin.html
 The data insert/update/delete process has been greatly simplified. In the earlier version of Carto Doodle, every new, updated, and deleted map geometry was sent to CartoDB as a separate cURL; this updated version greatly simplifies that process. On submitting new map geometries, only one cURL is sent to each destination with one insert statement containing all of the new geometries to be inserted; similarly, from the admin page, there is one cURL per destination for updates and one cURL per destination for deletions.
 
 <strong>Update - 7/21/16</strong>
-See my repo 'GeoJSON Doodler' for a simplified (but probably more useful) tool that allows users to draw and export GeoJSONs to .csv.
+See my repo 'GeoJSON Doodler' - https://github.com/darrenklein/geojson_doodler - for a simplified (but probably more useful) tool that allows users to draw and export GeoJSONs to .csv.
