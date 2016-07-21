@@ -50,20 +50,22 @@ map.on('draw:created', function(e){
     e.layer.bindPopup(popUpFields).openPopup();
     
     
-    
 
     e.layer.on('click', function(){
         
         if(e.layer.properties){
             
-            console.log(this.popupContent)
+            var popupPropertiesEdit = "Properties</br><button class='add_property'>Add property</button><table class='properties_container'><tr class='header_row'><th>Property</th><th>Value</th></tr>";
             
-            //e.layer.bindPopup(e.layer.popupContent).openPopup();
-
-            
-            $.each(e.layer.properties, function(key, value){
-                //$(this).next(".properties_container").append("<tr class='properties_row'><td><input type='text' class='property' /></td><td><input type='text' class='value' /></td></tr>");
+            $.each(e.layer.properties, function(attribute, value){
+                popupPropertiesEdit += "<tr class='properties_row'><td><input type='text' class='property' value='"+attribute+"' /></td><td><input type='text' class='value' value='"+value+"' /></td></tr>";
             });
+            
+            popupPropertiesEdit += "</table><button class='popup_save'>Save</button>";
+            
+            e.layer.setPopupContent(popupPropertiesEdit);
+            
+
         }
         else{
             e.layer.bindPopup(popUpFields).openPopup();
@@ -72,8 +74,10 @@ map.on('draw:created', function(e){
     
     
     
-
-    $('.popup_save').click(function(){
+    $(document).on("click", ".popup_save", function(){
+    //$('.popup_save').click(function(){
+        
+        console.log("hi")
             
         propertiesTable = $(this).prev();
         propertiesRows = propertiesTable.find(".properties_row");
@@ -89,10 +93,6 @@ map.on('draw:created', function(e){
         });
         
         e.layer.properties = propertiesObject;
-        e.layer.popupContent = e.layer._popup._contentNode;
-        
-        
-        console.log(e.layer);
     });
 });
 
