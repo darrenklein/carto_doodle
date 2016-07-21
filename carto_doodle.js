@@ -42,11 +42,8 @@ map.on('draw:created', function(e){
     e.layer.bindPopup(popupFields).openPopup();
     
     
-    
-    
-    //THIS IS THE PROBLEM RIGHT HERE - THE WAY THIS FUNCTION IS CALLED FUCKS THINGS UP
+
     $('.popup_save').click(function(){
-    //$(document).on("click", ".popup_save", function(){
             
         propertiesTable = $(this).prev();
         propertiesRows = propertiesTable.find(".properties_row");
@@ -81,24 +78,24 @@ map.on('draw:created', function(e){
             e.layer.bindPopup(popupFieldsEdit).openPopup();
             
             
-                $('.popup_save').click(function(){
-    //$(document).on("click", ".popup_save", function(){
+            //NEED TO REBUILD THIS JUST AS A FUNCTION THAT GETS CALLED, NOT FULLY SPELLED OUT AS BELOW
+            $('.popup_save').click(function(){
             
-        propertiesTable = $(this).prev();
-        propertiesRows = propertiesTable.find(".properties_row");
-        
-        propertiesObject = {};
-        
-        $(propertiesRows).each(function(){
-            
-            property = $(this).find(".property").val();
-            value = $(this).find(".value").val();
-            
-            propertiesObject[property] = value;
-        });
-        
-        e.layer.properties = propertiesObject;
-    });
+                propertiesTable = $(this).prev();
+                propertiesRows = propertiesTable.find(".properties_row");
+
+                propertiesObject = {};
+
+                $(propertiesRows).each(function(){
+
+                    property = $(this).find(".property").val();
+                    value = $(this).find(".value").val();
+
+                    propertiesObject[property] = value;
+                });
+
+                e.layer.properties = propertiesObject;
+            });
         }
         else{
             e.layer.bindPopup(popupFields).openPopup();
